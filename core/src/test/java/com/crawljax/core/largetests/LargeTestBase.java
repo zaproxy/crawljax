@@ -115,10 +115,13 @@ public abstract class LargeTestBase {
 	public void setup() throws Exception {
 		if (!HAS_RUN.get()) {
 			HAS_RUN.set(true);
-			CrawljaxRunner crawljax = null;
-			crawljax = new CrawljaxRunner(getCrawljaxConfiguration());
-			session = crawljax.call();
-			HAS_FINISHED.set(true);
+			try {
+				CrawljaxRunner crawljax = null;
+				crawljax = new CrawljaxRunner(getCrawljaxConfiguration());
+				session = crawljax.call();
+			} finally {
+				HAS_FINISHED.set(true);
+			}
 		}
 		else {
 			while (!HAS_FINISHED.get()) {
