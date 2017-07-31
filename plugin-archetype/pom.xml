@@ -2,12 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.crawljax</groupId>
+		<groupId>org.zaproxy.crawljax</groupId>
 		<artifactId>crawljax-parent-pom</artifactId>
 		<version>3.7-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.crawljax.plugins.archetypes</groupId>
+	<groupId>org.zaproxy.crawljax.plugins.archetypes</groupId>
 	<artifactId>crawljax-plugins-archetype</artifactId>
 
 	<packaging>jar</packaging>

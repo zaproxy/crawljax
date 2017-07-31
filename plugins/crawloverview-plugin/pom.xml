@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.crawljax.plugins</groupId>
+		<groupId>org.zaproxy.crawljax.plugins</groupId>
 		<artifactId>crawljax-plugins-parent</artifactId>
 		<version>3.7-SNAPSHOT</version>
 	</parent>
@@ -63,12 +63,12 @@
 			<version>2.4.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.crawljax</groupId>
+			<groupId>org.zaproxy.crawljax</groupId>
 			<artifactId>crawljax-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.crawljax</groupId>
+			<groupId>org.zaproxy.crawljax</groupId>
 			<artifactId>crawljax-test-utils</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
