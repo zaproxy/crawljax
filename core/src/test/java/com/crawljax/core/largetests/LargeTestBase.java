@@ -3,11 +3,14 @@ package com.crawljax.core.largetests;
 import static com.crawljax.browser.matchers.StateFlowGraphMatchers.stateWithDomSubstring;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeThat;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -110,6 +113,29 @@ public abstract class LargeTestBase {
 
 	@Rule
 	public final Timeout timeout = new Timeout((int) TimeUnit.MINUTES.toMillis(15));
+
+	protected static void assumeWebDriver(String systemProperty, String binaryName) throws Exception {
+		assumeThat(System.getProperty(systemProperty) != null
+		  || isOnClassPath(binaryName), is(true));
+	}
+
+	private static boolean isOnClassPath(String binaryName) throws IOException, InterruptedException {
+		try {
+			if (!System.getProperty("os.name").startsWith("Windows")) {
+				Process exec = Runtime.getRuntime().exec("which " + binaryName);
+				boolean found = exec.waitFor() == 0;
+				LOG.info("Found {} on the classpath = {}", binaryName, found);
+				return found;
+			}
+			else {
+				return false;
+			}
+		}
+		catch (RuntimeException e) {
+			LOG.info("Could not determine if {} is on the classpath: {}", binaryName, e.getMessage());
+			return false;
+		}
+	}
 
 	@Before
 	public void setup() throws Exception {
