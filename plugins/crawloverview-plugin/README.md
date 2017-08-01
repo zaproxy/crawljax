@@ -7,7 +7,7 @@ Maven
 -----
 
     <dependency>
-      <groupId>com.crawljax.plugins</groupId>
+      <groupId>org.zaproxy.crawljax.plugins</groupId>
       <artifactId>crawloverview</artifactId>
       <version>1.2</version>
     </dependency>

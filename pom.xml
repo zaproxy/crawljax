@@ -7,7 +7,7 @@
 		<version>9</version>
 	</parent>
 
-	<groupId>com.crawljax</groupId>
+	<groupId>org.zaproxy.crawljax</groupId>
 	<artifactId>crawljax-parent-pom</artifactId>
 	<version>3.7-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -20,7 +20,6 @@
 		the various navigation paths and states within an Ajax
 		application.
 	</description>
-	<url>http://crawljax.com</url>
 	<inceptionYear>2012</inceptionYear>
 
 	<prerequisites>
@@ -40,31 +39,11 @@
 	</properties>
 
 	<scm>
-		<connection>scm:git:git@github.com:crawljax/crawljax.git</connection>
-		<developerConnection>scm:git:git@github.com:crawljax/crawljax.git</developerConnection>
-		<url>https://github.com/crawljax/crawljax</url>
+		<connection>scm:git:git@github.com:zaproxy/crawljax.git</connection>
+		<developerConnection>scm:git:git@github.com:zaproxy/crawljax.git</developerConnection>
+		<url>https://github.com/zaproxy/crawljax</url>
 		<tag>HEAD</tag>
 	</scm>
-
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/crawljax/crawljax/issues</url>
-	</issueManagement>
-
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.crawljax.com</url>
-	</ciManagement>
-
-	<mailingLists>
-		<mailingList>
-			<name>Crawljax Mailing List</name>
-			<subscribe>http://groups.google.com/group/crawljax/subscribe</subscribe>
-			<unsubscribe>crawljax+unsubscribe@googlegroups.com</unsubscribe>
-			<post>crawljax@googlegroups.com</post>
-			<archive>http://groups.google.com/group/crawljax</archive>
-		</mailingList>
-	</mailingLists>
 
 	<licenses>
 		<license>
