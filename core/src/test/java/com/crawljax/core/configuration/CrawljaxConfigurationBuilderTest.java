@@ -1,6 +1,7 @@
 package com.crawljax.core.configuration;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
@@ -48,6 +49,20 @@ public class CrawljaxConfigurationBuilderTest {
 	public void ifCannotCreateOutputFolderReject() throws Exception {
 		File file = new File("/this/should/not/be/writable");
 		testBuilder().setOutputDirectory(file).build();
+	}
+
+	@Test
+	public void shouldReturnDefaultCrawlScopeIfNoneSet() throws Exception {
+		CrawlScope crawlScope = testBuilder().build().getCrawlScope();
+		assertThat(crawlScope, is(instanceOf(DefaultCrawlScope.class)));
+		assertThat(((DefaultCrawlScope) crawlScope).getUrl().toString(), is("http://localhost"));
+	}
+
+	@Test
+	public void shouldReturnCrawlScopeSet() throws Exception {
+		CrawlScope crawlScope = url -> true;
+		CrawljaxConfiguration conf = testBuilder().setCrawlScope(crawlScope).build();
+		assertThat(conf.getCrawlScope(), is(crawlScope));
 	}
 
 	@Test
