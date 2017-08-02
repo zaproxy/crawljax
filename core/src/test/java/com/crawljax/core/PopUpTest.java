@@ -10,7 +10,6 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.CrawljaxConfiguration.CrawljaxConfigurationBuilder;
 import com.crawljax.test.BrowserTest;
 import com.crawljax.test.RunWithWebServer;
@@ -23,8 +22,7 @@ public class PopUpTest {
 
 	@Test
 	public void testPopups() throws CrawljaxException {
-		CrawljaxConfigurationBuilder builder =
-		        CrawljaxConfiguration.builderFor(WEB_SERVER.getSiteUrl().resolve("popup"));
+		CrawljaxConfigurationBuilder builder = WEB_SERVER.newConfigBuilder("popup");
 		builder.setMaximumDepth(3);
 		builder.crawlRules().click("a");
 		builder.crawlRules().waitAfterEvent(100, TimeUnit.MILLISECONDS);
