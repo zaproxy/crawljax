@@ -31,7 +31,6 @@ public class WebDriverBackedEmbeddedBrowserTest {
 
 	@Test
 	public void testGetDocument() throws Exception {
-		// TODO Stefan; refactor out the direct use of the FirefoxDriver
 		WebDriverBackedEmbeddedBrowser browser = WebDriverBackedEmbeddedBrowser
 				.withDriver(provider.newBrowser(),
 						ImmutableSortedSet.<String> of(), 100, 100);
@@ -51,7 +50,6 @@ public class WebDriverBackedEmbeddedBrowserTest {
 
 	@Test
 	public void saveScreenShot() throws CrawljaxException, IOException {
-		// TODO Stefan; refactor out the direct use of the FirefoxDriver
 		WebDriverBackedEmbeddedBrowser browser = WebDriverBackedEmbeddedBrowser
 				.withDriver(provider.newBrowser(),
 						ImmutableSortedSet.<String> of(), 500, 500);
