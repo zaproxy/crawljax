@@ -23,12 +23,12 @@ public class RandomInputValueGenerator {
 	 * @return a random string
 	 */
 	private String generate(String characters, int length) {
-		StringBuffer buf = new StringBuffer();
+		StringBuilder strBuilder = new StringBuilder();
 		for (int i = 0; i < length; i++) {
 			int index = new Random().nextInt(characters.length());
-			buf.append(characters.substring(index, index + 1));
+			strBuilder.append(characters.substring(index, index + 1));
 		}
-		return buf.toString();
+		return strBuilder.toString();
 	}
 
 	/**
