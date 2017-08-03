@@ -18,6 +18,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import com.crawljax.browser.BrowserProvider;
+import com.crawljax.core.configuration.BrowserConfiguration;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.CrawljaxConfiguration.CrawljaxConfigurationBuilder;
 import com.crawljax.test.BrowserTest;
@@ -73,6 +75,8 @@ public class PassBasicHttpAuthTest {
 		        CrawljaxConfiguration.builderFor(url);
 		builder.setMaximumStates(3);
 		builder.setBasicAuth(USERNAME, PASSWORD);
+		builder.setBrowserConfig(
+		        new BrowserConfiguration(BrowserProvider.getBrowserType()));
 		CrawlSession session = new CrawljaxRunner(builder.build()).call();
 
 		assertThat(session.getStateFlowGraph(), hasStates(3));
