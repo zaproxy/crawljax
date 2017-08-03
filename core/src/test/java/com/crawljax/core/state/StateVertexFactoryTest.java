@@ -8,10 +8,13 @@ import com.crawljax.core.CrawlSession;
 import com.crawljax.core.CrawljaxRunner;
 import com.crawljax.core.ExitNotifier;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
+import com.crawljax.test.BrowserTest;
 import com.crawljax.test.RunWithWebServer;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+@Category(BrowserTest.class)
 public class StateVertexFactoryTest {
 
 	@ClassRule
