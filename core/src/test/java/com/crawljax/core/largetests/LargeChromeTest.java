@@ -11,7 +11,7 @@ public class LargeChromeTest extends LargeTestBase {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		assumeWebDriver("webdriver.chrome.driver", "chromedriver");
+		assumeBinary("webdriver.chrome.driver", "chromedriver");
 	}
 
 	@Override

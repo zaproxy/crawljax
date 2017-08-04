@@ -12,7 +12,7 @@ public class LargeFirefoxTest extends LargeTestBase {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		assumeWebDriver("webdriver.gecko.driver", "geckodriver");
+		assumeBinary("webdriver.gecko.driver", "geckodriver");
 	}
 
 	@Override
