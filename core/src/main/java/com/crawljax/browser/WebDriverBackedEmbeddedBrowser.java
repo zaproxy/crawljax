@@ -26,6 +26,8 @@ import com.crawljax.util.DomUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.io.Files;
+
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -303,6 +305,14 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 					webElement.click();
 				} catch (ElementNotVisibleException e) {
 					throw e;
+				} catch (ElementNotInteractableException e) {
+					// HtmlUnitDriver throws ElementNotInteractableException instead of
+					// ElementNotVisibleException for elements that are not visible.
+					String message = e.getMessage();
+					if (message != null && message.contains("visible")) {
+						throw new ElementNotVisibleException(message, e);
+					}
+					return false;
 				} catch (WebDriverException e) {
 					throwIfConnectionException(e);
 					return false;
