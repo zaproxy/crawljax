@@ -114,7 +114,7 @@ public abstract class LargeTestBase {
 	@Rule
 	public final Timeout timeout = new Timeout((int) TimeUnit.MINUTES.toMillis(15));
 
-	protected static void assumeWebDriver(String systemProperty, String binaryName) throws Exception {
+	protected static void assumeBinary(String systemProperty, String binaryName) throws Exception {
 		assumeThat(System.getProperty(systemProperty) != null
 		  || isOnClassPath(binaryName), is(true));
 	}
