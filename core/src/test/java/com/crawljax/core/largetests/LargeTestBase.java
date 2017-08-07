@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.crawljax.browser.EmbeddedBrowser.BrowserType;
 import com.crawljax.condition.NotRegexCondition;
 import com.crawljax.condition.NotXPathCondition;
 import com.crawljax.condition.RegexCondition;
@@ -301,6 +302,8 @@ public abstract class LargeTestBase {
 	 */
 	@Test
 	public void testManualFormInput() {
+		assumeNotFirefoxBecauseOfElementSendKeysIssue();
+
 		for (StateVertex state : getStateFlowGraph().getAllStates()) {
 			if (state.getDom().contains(TITLE_MANUAL_INPUT_RESULT)) {
 				assertTrue("Result contains the correct data",
@@ -311,11 +314,20 @@ public abstract class LargeTestBase {
 		fail("Result manual input found");
 	}
 
+	private void assumeNotFirefoxBecauseOfElementSendKeysIssue() {
+		// XXX Firefox issue: https://bugzilla.mozilla.org/show_bug.cgi?id=1385895
+		assumeThat("Element Send Keys selects wrong <option> when dispatching text to <select>",
+		        session.getConfig().getBrowserConfig().getBrowsertype(),
+		        is(not(BrowserType.FIREFOX)));
+	}
+
 	/**
 	 * Tests whether all the different form values are submitted and found.
 	 */
 	@Test
 	public void testMultipleFormInput() {
+		assumeNotFirefoxBecauseOfElementSendKeysIssue();
+
 		Set<String> resultsFound = new HashSet<>();
 		for (StateVertex state : getStateFlowGraph().getAllStates()) {
 			if (state.getDom().contains(TITLE_MULTIPLE_INPUT_RESULT)) {
