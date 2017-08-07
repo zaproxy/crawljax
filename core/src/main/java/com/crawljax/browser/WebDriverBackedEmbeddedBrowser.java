@@ -510,6 +510,10 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 		try {
 			JavascriptExecutor js = (JavascriptExecutor) browser;
 			return js.executeScript(code);
+		} catch (UnsupportedOperationException e) {
+			// HtmlUnitDriver throws UnsupportedOperationException if it can't execute the
+			// JavaScript, for example, "Cannot execute JS against a plain text page".
+			throw new CrawljaxException(e);
 		} catch (WebDriverException e) {
 			throwIfConnectionException(e);
 			throw new CrawljaxException(e);
