@@ -64,7 +64,7 @@ public class StateComparator {
 	private boolean allPreConditionsSucceed(OracleComparator oraclePreCondition,
 	        EmbeddedBrowser browser) {
 		for (Condition preCondition : oraclePreCondition.getPreConditions()) {
-			LOGGER.debug("Check precondition: " + preCondition.toString());
+			LOGGER.debug("Check precondition: {}", preCondition.toString());
 			if (!preCondition.check(browser)) {
 				return false;
 			}

@@ -196,7 +196,7 @@ public class FormHandler {
 		try {
 			Document dom = DomUtils.asDocument(browser.getStrippedDomWithoutIframeContent());
 			for (FormInput input : formInputs) {
-				LOGGER.debug("Filling in: " + input);
+				LOGGER.debug("Filling in: {}", input);
 				setInputElementValue(formInputValueHelper.getBelongingNode(input, dom), input);
 			}
 		} catch (IOException | XPathExpressionException e) {
