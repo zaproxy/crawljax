@@ -462,7 +462,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 			boolean result = false;
 
 			if (eventable.getRelatedFrame() != null && !eventable.getRelatedFrame().equals("")) {
-				LOGGER.debug("switching to frame: " + eventable.getRelatedFrame());
+				LOGGER.debug("switching to frame: {}", eventable.getRelatedFrame());
 				try {
 
 					switchToFrame(eventable.getRelatedFrame());
@@ -634,13 +634,13 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 
 			String handle = browser.getWindowHandle();
 
-			LOGGER.debug("The current H: " + handle);
+			LOGGER.debug("The current H: {}", handle);
 
 			switchToFrame(frameIdentification);
 
 			String toAppend = browser.getPageSource();
 
-			LOGGER.debug("frame dom: " + toAppend);
+			LOGGER.debug("frame dom: {}", toAppend);
 
 			browser.switchTo().defaultContent();
 
@@ -652,20 +652,20 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 
 				appendFrameContent(importedElement, document, frameIdentification);
 			} catch (DOMException | IOException e) {
-				LOGGER.info("Got exception while inspecting a frame:" + frameIdentification
-				        + " continuing...", e);
+				LOGGER.info("Got exception while inspecting a frame: {} continuing...",
+				        frameIdentification, e);
 			}
 		}
 	}
 
 	private void switchToFrame(String frameIdentification) throws NoSuchFrameException {
-		LOGGER.debug("frame identification: " + frameIdentification);
+		LOGGER.debug("frame identification: {}", frameIdentification);
 
 		if (frameIdentification.contains(".")) {
 			String[] frames = frameIdentification.split("\\.");
 
 			for (String frameId : frames) {
-				LOGGER.debug("switching to frame: " + frameId);
+				LOGGER.debug("switching to frame: {}", frameId);
 				browser.switchTo().frame(frameId);
 			}
 

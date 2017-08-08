@@ -88,10 +88,10 @@ public class StyleComparator extends AbstractComparator {
 					parent.removeChild(removeNode);
 				}
 			} catch (XPathExpressionException e) {
-				LOGGER.warn("Error with StyleOracle: " + e.getMessage());
+				LOGGER.warn("Error with StyleOracle: {}", e.getMessage());
 				LOGGER.error(e.getMessage(), e);
 			} catch (DOMException e) {
-				LOGGER.warn("Error with StyleOracle: " + e.getMessage());
+				LOGGER.warn("Error with StyleOracle: {}", e.getMessage());
 				LOGGER.error(e.getMessage(), e);
 			}
 		}
@@ -108,9 +108,9 @@ public class StyleComparator extends AbstractComparator {
 					attributes.removeNamedItem(attribute);
 				}
 			} catch (XPathExpressionException e) {
-				LOGGER.warn("Error with StyleOracle: " + e.getMessage());
+				LOGGER.warn("Error with StyleOracle: {}", e.getMessage());
 			} catch (DOMException e) {
-				LOGGER.warn("Error with StyleOracle: " + e.getMessage());
+				LOGGER.warn("Error with StyleOracle: {}", e.getMessage());
 			}
 		}
 		return dom;

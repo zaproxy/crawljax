@@ -198,8 +198,8 @@ public final class FormInputValueHelper {
 			break;
 
 		default:
-			LOGGER.info("Identification " + input.getIdentification()
-					+ " not supported yet for form inputs.");
+			LOGGER.info("Identification {} not supported yet for form inputs.",
+			        input.getIdentification());
 			break;
 
 		}

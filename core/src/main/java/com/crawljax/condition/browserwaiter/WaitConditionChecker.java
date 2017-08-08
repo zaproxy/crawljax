@@ -45,7 +45,7 @@ public class WaitConditionChecker {
 			return;
 		}
 		for (WaitCondition waitCondition : waitConditions) {
-			LOGGER.info("Checking WaitCondition for url: " + waitCondition.getUrl());
+			LOGGER.info("Checking WaitCondition for url: {}", waitCondition.getUrl());
 			waitCondition.testAndWait(browser);
 		}
 	}
