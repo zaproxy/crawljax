@@ -69,7 +69,7 @@ public class PassBasicHttpAuthTest {
 	}
 
 	@Test
-	public void testDontClickUnderXPath() throws Exception {
+	public void testProvidedCredentialsAreUsedInBasicAuth() throws Exception {
 		String url = "http://localhost:" + port + "/infinite.html";
 		CrawljaxConfigurationBuilder builder =
 		        CrawljaxConfiguration.builderFor(url);
