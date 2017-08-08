@@ -13,7 +13,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.crawljax.browser.EmbeddedBrowser.BrowserType;
 import com.google.common.base.Strings;
 
 public class BrowserProvider extends ExternalResource {
@@ -79,17 +78,7 @@ public class BrowserProvider extends ExternalResource {
 	protected void after() {
 		for (RemoteWebDriver browser : usedBrowsers) {
 			try {
-
-				/* Make sure we clean up properly. */
-				if (!browser.toString().contains("(null)")) {
-					if (getBrowserType() == BrowserType.PHANTOMJS) {
-						// PhantomJS only quits the process on quit command
-						browser.quit();
-					} else {
-						browser.close();
-					}
-				}
-
+				browser.quit();
 			} catch (RuntimeException e) {
 				LOG.warn("Could not close the browser: {}", e.getMessage());
 			}
