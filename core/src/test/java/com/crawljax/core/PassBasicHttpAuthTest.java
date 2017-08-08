@@ -1,7 +1,10 @@
 package com.crawljax.core;
 
 import static com.crawljax.browser.matchers.StateFlowGraphMatchers.hasStates;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assume.assumeThat;
 
 import org.eclipse.jetty.security.ConstraintMapping;
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
@@ -19,6 +22,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import com.crawljax.browser.BrowserProvider;
+import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.core.configuration.BrowserConfiguration;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.CrawljaxConfiguration.CrawljaxConfigurationBuilder;
@@ -70,6 +74,11 @@ public class PassBasicHttpAuthTest {
 
 	@Test
 	public void testProvidedCredentialsAreUsedInBasicAuth() throws Exception {
+		// XXX PhantomJS issue: https://github.com/ariya/phantomjs/issues/12665
+		assumeThat("URLs with userinfo are not correctly processed",
+		        BrowserProvider.getBrowserType(),
+		        is(not(EmbeddedBrowser.BrowserType.PHANTOMJS)));
+
 		String url = "http://localhost:" + port + "/infinite.html";
 		CrawljaxConfigurationBuilder builder =
 		        CrawljaxConfiguration.builderFor(url);
