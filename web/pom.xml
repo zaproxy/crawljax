@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.zaproxy.crawljax</groupId>
 		<artifactId>crawljax-parent-pom</artifactId>
-		<version>3.7-SNAPSHOT</version>
+		<version>3.7</version>
 	</parent>
 	<artifactId>crawljax-web</artifactId>
 	<packaging>jar</packaging>
