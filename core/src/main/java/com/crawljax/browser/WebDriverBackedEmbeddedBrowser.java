@@ -9,6 +9,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,6 +64,10 @@ import org.w3c.dom.NodeList;
 public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	private static final Logger LOGGER = LoggerFactory
 	        .getLogger(WebDriverBackedEmbeddedBrowser.class);
+
+	private static final int BROWSER_CLOSE_TIMEOUT_SECS = 3;
+	private static final int BROWSER_CLOSE_2ND_TIMEOUT_SECS = 2;
+	private static ExecutorService closeBrowserExecutor;
 
 	/**
 	 * Create a RemoteWebDriver backed EmbeddedBrowser.
@@ -332,19 +344,50 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 
 	@Override
 	public void close() {
-		LOGGER.info("Closing the browser...");
+		LOGGER.debug("Closing the browser...");
+		// close browser and close every associated window.
+		Future<?> closeTask = getCloseBrowserExecutor().submit(browser::quit);
 		try {
-			// close browser and close every associated window.
-			browser.quit();
-		} catch (WebDriverException e) {
-			if (e.getCause() instanceof InterruptedException || e.getCause().getCause() instanceof InterruptedException) {
-				LOGGER.info("Interrupted while waiting for the browser to close. It might not close correctly");
-				Thread.currentThread().interrupt();
-				return;
+			awaitForCloseTask(closeTask, BROWSER_CLOSE_TIMEOUT_SECS);
+		} catch (InterruptedException e) {
+			LOGGER.debug("Interrupted while waiting for the browser to close.");
+			try {
+				// Give some more time anyway, we want to wait for
+				// the process to terminate before returning.
+				awaitForCloseTask(closeTask, BROWSER_CLOSE_2ND_TIMEOUT_SECS);
+			} catch (InterruptedException ignore) {
+				LOGGER.debug("Interrupted, a 2nd time, while waiting for the browser to close.");
 			}
-			throw wrapWebDriverExceptionIfConnectionException(e);
+			Thread.currentThread().interrupt();
 		}
-		LOGGER.debug("Browser closed...");
+		LOGGER.debug("Browser closed: {}", closeTask.isDone());
+	}
+
+	private void awaitForCloseTask(Future<?> closeTask, int timeoutSeconds) throws InterruptedException {
+		try {
+			closeTask.get(timeoutSeconds, TimeUnit.SECONDS);
+		} catch (TimeoutException e) {
+			LOGGER.debug("Browser not closed after {} seconds.", timeoutSeconds);
+		} catch (ExecutionException e) {
+			Throwable cause = e.getCause();
+			if (cause instanceof WebDriverException) {
+				throw wrapWebDriverExceptionIfConnectionException((WebDriverException) cause);
+			}
+			LOGGER.error("An exception occurred while closing the browser:", cause);
+		}
+	}
+
+	private static ExecutorService getCloseBrowserExecutor() {
+		if (closeBrowserExecutor == null) {
+			createCloseBrowserExecutor();
+		}
+		return closeBrowserExecutor;
+	}
+
+	private static synchronized void createCloseBrowserExecutor() {
+		if (closeBrowserExecutor == null) {
+			closeBrowserExecutor = Executors.newCachedThreadPool(new CloseBrowserThreadFactory());
+		}
 	}
 
 	@Override
@@ -897,6 +940,28 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	private void throwIfConnectionException(WebDriverException exception) {
 		if (exceptionIsConnectionException(exception)) {
 			throw wrapWebDriverExceptionIfConnectionException(exception);
+		}
+	}
+
+	private static class CloseBrowserThreadFactory implements ThreadFactory {
+		private static final String NAME_PREFIX = "Crawljax-CloseBrowserThread-";
+		private final ThreadGroup group;
+		private final AtomicInteger threadNumber = new AtomicInteger(1);
+
+		public CloseBrowserThreadFactory() {
+			SecurityManager s = System.getSecurityManager();
+			group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
+		}
+
+		public Thread newThread(Runnable r) {
+			Thread t = new Thread(group, r,
+			        NAME_PREFIX + threadNumber.getAndIncrement(),
+			        0);
+			if (t.isDaemon())
+				t.setDaemon(false);
+			if (t.getPriority() != Thread.NORM_PRIORITY)
+				t.setPriority(Thread.NORM_PRIORITY);
+			return t;
 		}
 	}
 }
