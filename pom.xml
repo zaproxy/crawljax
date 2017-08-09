@@ -9,7 +9,7 @@
 
 	<groupId>org.zaproxy.crawljax</groupId>
 	<artifactId>crawljax-parent-pom</artifactId>
-	<version>3.7</version>
+	<version>3.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Crawljax parent POM</name>
@@ -44,7 +44,7 @@
 		<connection>scm:git:git@github.com:zaproxy/crawljax.git</connection>
 		<developerConnection>scm:git:git@github.com:zaproxy/crawljax.git</developerConnection>
 		<url>https://github.com/zaproxy/crawljax</url>
-		<tag>v3.7</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<licenses>
