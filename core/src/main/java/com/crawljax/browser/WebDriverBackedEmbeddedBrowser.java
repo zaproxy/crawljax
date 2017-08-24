@@ -953,6 +953,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 			group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
 		}
 
+		@Override
 		public Thread newThread(Runnable r) {
 			Thread t = new Thread(group, r,
 			        NAME_PREFIX + threadNumber.getAndIncrement(),
