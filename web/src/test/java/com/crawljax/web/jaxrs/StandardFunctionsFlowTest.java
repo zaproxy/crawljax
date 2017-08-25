@@ -190,6 +190,7 @@ public class StandardFunctionsFlowTest {
 		followLink(saveConfigurationLink.get(0));
 
 		ExpectedCondition<Boolean> isSaved = new ExpectedCondition<Boolean>() {
+			@Override
 			public Boolean apply(WebDriver driver) {
 				WebElement notification = driver.findElements(By.id("notification")).get(0);
 				return notification.getText().equals("Configuration Saved");
@@ -225,6 +226,7 @@ public class StandardFunctionsFlowTest {
 		confirmDialog.accept();
 
 		ExpectedCondition<Boolean> isDeleted = new ExpectedCondition<Boolean>() {
+			@Override
 			public Boolean apply(WebDriver driver) {
 				WebElement notification = driver.findElements(By.id("notification")).get(0);
 				return notification.getText().equals("Configuration Deleted");
@@ -246,6 +248,7 @@ public class StandardFunctionsFlowTest {
 		followLink(runConfigurationLink.get(0));
 
 		ExpectedCondition<Boolean> isRunning = new ExpectedCondition<Boolean>() {
+			@Override
 			public Boolean apply(WebDriver driver) {
 				WebElement running = driver.findElement(By.xpath(
 		                "//li[contains(text(),'CRAWL EXECUTION QUEUE')]/following-sibling::li//span[contains(i,'running')]"));
@@ -256,6 +259,7 @@ public class StandardFunctionsFlowTest {
 		wait.until(isRunning);
 
 		ExpectedCondition<Boolean> isComplete = new ExpectedCondition<Boolean>() {
+			@Override
 			public Boolean apply(WebDriver driver) {
 				WebElement success = driver.findElement(By.xpath(
 		                "//li[contains(text(),'CRAWL EXECUTION QUEUE')]/following-sibling::li//span[contains(i,'success')]"));
@@ -383,6 +387,7 @@ public class StandardFunctionsFlowTest {
 			Alert confirmDialog = driver.switchTo().alert();
 			confirmDialog.accept();
 			ExpectedCondition<Boolean> isDeleted = new ExpectedCondition<Boolean>() {
+				@Override
 				public Boolean apply(WebDriver driver) {
 					WebElement notification = driver.findElements(By.id("notification")).get(0);
 					return notification.getText().equals("Plugin Deleted");
