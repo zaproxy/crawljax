@@ -34,13 +34,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 
 public class StandardFunctionsFlowTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(StandardFunctionsFlowTest.class);
-	private static DefaultSelenium selenium;
 	private static WebDriver driver;
 
 	private static String CONFIG_NAME = "TestConfiguration";
@@ -63,7 +60,6 @@ public class StandardFunctionsFlowTest {
 	public static void setup() throws Exception {
 		driver = new FirefoxDriver();
 		LOG.debug("Starting selenium");
-		selenium = new WebDriverBackedSelenium(driver, SERVER.getUrl());
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 
@@ -424,7 +420,7 @@ public class StandardFunctionsFlowTest {
 	}
 
 	private void open(String hashLocation) {
-		selenium.open("/#/" + hashLocation);
+		driver.get(SERVER.getUrl() + "/#/" + hashLocation);
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -480,6 +476,6 @@ public class StandardFunctionsFlowTest {
 
 	@AfterClass
 	public static void tearDown() throws Exception {
-		selenium.stop();
+		driver.quit();
 	}
 }
