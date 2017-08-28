@@ -24,11 +24,17 @@ import org.openqa.selenium.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.crawljax.browser.BrowserProvider;
 import com.crawljax.plugins.crawloverview.model.CandidateElementPosition;
 import com.crawljax.plugins.crawloverview.model.OutPutModel;
 import com.crawljax.plugins.crawloverview.model.State;
 
 public class HoverTest {
+
+	// NOTE: Assertion of elements' position and dimensions were done with:
+	// - Chrome 59
+	// - Firefox 55
+	// other versions might fail (with some pixels up or down).
 
 	private static final int MIN_HEIGHT = 500;
 
@@ -66,9 +72,27 @@ public class HoverTest {
 		List<CandidateElementPosition> candidates = state.getCandidateElements();
 		assertThat("Number of hovers", candidates, hasSize(3));
 		Assume.assumeTrue(resolutionBigEnough);
-		assertThat(candidates, hasItem(element(new Point(48, 118), new Dimension(52, 16))));
-		assertThat(candidates, hasItem(element(new Point(48, 137), new Dimension(51, 16))));
-		assertThat(candidates, hasItem(element(new Point(48, 156), new Dimension(200, 16))));
+
+		switch (BrowserProvider.getBrowserType()) {
+			case CHROME:
+				assertThat(candidates,
+				        hasItem(element(new Point(48, 113), new Dimension(52, 17))));
+				assertThat(candidates,
+				        hasItem(element(new Point(48, 131), new Dimension(51, 17))));
+				assertThat(candidates,
+				        hasItem(element(new Point(48, 149), new Dimension(200, 17))));
+				break;
+			case FIREFOX:
+				assertThat(candidates,
+				        hasItem(element(new Point(48, 116), new Dimension(61, 19))));
+				assertThat(candidates,
+				        hasItem(element(new Point(48, 135), new Dimension(61, 19))));
+				assertThat(candidates,
+				        hasItem(element(new Point(48, 154), new Dimension(252, 19))));
+				break;
+			default:
+				// Don't assert for other browsers.
+		}
 	}
 
 	@Test
@@ -78,7 +102,19 @@ public class HoverTest {
 		List<CandidateElementPosition> candidates = state.getCandidateElements();
 		assertThat(candidates, hasSize(1));
 		Assume.assumeTrue(resolutionBigEnough);
-		assertThat(candidates, hasItem(element(new Point(58, 147), new Dimension(89, 16))));
+
+		switch (BrowserProvider.getBrowserType()) {
+			case CHROME:
+				assertThat(candidates,
+				        hasItem(element(new Point(58, 142), new Dimension(89, 17))));
+				break;
+			case FIREFOX:
+				assertThat(candidates,
+				        hasItem(element(new Point(58, 145), new Dimension(110, 19))));
+				break;
+			default:
+				// Don't assert for other browsers.
+		}
 	}
 
 	@Test
@@ -88,7 +124,19 @@ public class HoverTest {
 		List<CandidateElementPosition> candidates = state.getCandidateElements();
 		assertThat(candidates, hasSize(1));
 		Assume.assumeTrue(resolutionBigEnough);
-		assertThat(candidates, hasItem(element(new Point(60, 168), new Dimension(51, 16))));
+
+		switch (BrowserProvider.getBrowserType()) {
+			case CHROME:
+				assertThat(candidates,
+				        hasItem(element(new Point(60, 163), new Dimension(51, 17))));
+				break;
+			case FIREFOX:
+				assertThat(candidates,
+				        hasItem(element(new Point(60, 166), new Dimension(61, 19))));
+				break;
+			default:
+				// Don't assert for other browsers.
+		}
 	}
 
 	@Test
@@ -97,7 +145,24 @@ public class HoverTest {
 		assertThat(state, is(notNullValue()));
 		List<CandidateElementPosition> candidates = state.getCandidateElements();
 		assertThat(candidates, hasSize(2));
-		// The dimensions can't be checked because they are dynamic.
+		Assume.assumeTrue(resolutionBigEnough);
+
+		switch (BrowserProvider.getBrowserType()) {
+			case CHROME:
+				assertThat(candidates,
+				        hasItem(element(new Point(370, 160), new Dimension(51, 17))));
+				assertThat(candidates,
+				        hasItem(element(new Point(424, 160), new Dimension(76, 17))));
+				break;
+			case FIREFOX:
+				assertThat(candidates,
+				        hasItem(element(new Point(490, 164), new Dimension(61, 19))));
+				assertThat(candidates,
+				        hasItem(element(new Point(556, 164), new Dimension(93, 19))));
+				break;
+			default:
+				// Don't assert for other browsers.
+		}
 	}
 
 	private State getStateByFileName(String name) {
