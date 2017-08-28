@@ -15,7 +15,6 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.security.Constraint;
-import org.eclipse.jetty.util.security.Credential;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +32,8 @@ public class PassBasicHttpAuthTest {
 
 	private static final String USERNAME = "test";
 	private static final String PASSWORD = "test#&";
+	private static final String USER_ROLE = "user";
+
 	private Server server;
 	private int port;
 
@@ -53,11 +54,11 @@ public class PassBasicHttpAuthTest {
 
 	private ConstraintSecurityHandler newSecurityHandler(ResourceHandler handler) {
 		HashLoginService login = new HashLoginService();
-		login.putUser(USERNAME, Credential.getCredential(PASSWORD), new String[] { "user" });
+		login.setConfig(PassBasicHttpAuthTest.class.getResource("/realm.properties").getPath());
 
 		Constraint constraint = new Constraint();
 		constraint.setName(Constraint.__BASIC_AUTH);
-		constraint.setRoles(new String[] { "user" });
+		constraint.setRoles(new String[] { USER_ROLE });
 		constraint.setAuthenticate(true);
 
 		ConstraintMapping cm = new ConstraintMapping();

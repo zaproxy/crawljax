@@ -86,7 +86,11 @@
 			<exclusions>
 				<exclusion>
 					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-websocket</artifactId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.jetty.websocket</groupId>
+					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
