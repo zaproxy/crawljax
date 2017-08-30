@@ -418,7 +418,7 @@ public class Crawler {
 			try {
 				waitTime = Integer.parseInt(m.group(1)) * 1000;
 			} catch (NumberFormatException ex) {
-				LOG.info("Could parse the amount of time to wait for a META tag refresh. Waiting 10 seconds...");
+				LOG.info("Could not parse the amount of time to wait for a META tag refresh. Waiting 10 seconds...");
 			}
 		}
 		return waitTime;
