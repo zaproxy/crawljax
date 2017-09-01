@@ -41,7 +41,7 @@ public class LoggingSocket extends WebSocketAdapter {
 				LOG.debug("Reading the log file");
 				String asString =
 				        "log-<p>"
-				                + Files.toString(log, Charsets.UTF_8).replace(
+				                + Files.asCharSource(log, Charsets.UTF_8).read().replace(
 				                        System.getProperty("line.separator"), "</p><p>");
 				asString = asString.substring(0, asString.length() - 4); // Remove last <p>
 				LOG.debug("Sending the log file");
