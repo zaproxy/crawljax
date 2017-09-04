@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 
 import com.crawljax.web.model.Configuration;
 import com.crawljax.web.model.Configurations;
-import com.crawljax.web.model.Plugin;
 import com.crawljax.web.model.Plugins;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
