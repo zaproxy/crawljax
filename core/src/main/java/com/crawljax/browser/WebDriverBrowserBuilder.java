@@ -12,7 +12,7 @@ import com.google.common.collect.ImmutableSortedSet;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
@@ -91,27 +91,25 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 
 	private EmbeddedBrowser newFireFoxBrowser(ImmutableSortedSet<String> filterAttributes,
 	        long crawlWaitReload, long crawlWaitEvent) {
+		FirefoxOptions options = new FirefoxOptions();
 		if (configuration.getProxyConfiguration() != null) {
-			FirefoxProfile profile = new FirefoxProfile();
 			String lang = configuration.getBrowserConfig().getLangOrNull();
 			if (!Strings.isNullOrEmpty(lang)) {
-				profile.setPreference("intl.accept_languages", lang);
+				options.addPreference("intl.accept_languages", lang);
 			}
 
-			profile.setPreference("network.proxy.http", configuration.getProxyConfiguration()
+			options.addPreference("network.proxy.http", configuration.getProxyConfiguration()
 			        .getHostname());
-			profile.setPreference("network.proxy.http_port", configuration
+			options.addPreference("network.proxy.http_port", configuration
 			        .getProxyConfiguration().getPort());
-			profile.setPreference("network.proxy.type", configuration.getProxyConfiguration()
+			options.addPreference("network.proxy.type", configuration.getProxyConfiguration()
 			        .getType().toInt());
 			/* use proxy for everything, including localhost */
-			profile.setPreference("network.proxy.no_proxies_on", "");
-
-			return WebDriverBackedEmbeddedBrowser.withDriver(new FirefoxDriver(profile),
-			        filterAttributes, crawlWaitReload, crawlWaitEvent);
+			options.addPreference("network.proxy.no_proxies_on", "");
 		}
 
-		return WebDriverBackedEmbeddedBrowser.withDriver(new FirefoxDriver(), filterAttributes,
+		return WebDriverBackedEmbeddedBrowser.withDriver(new FirefoxDriver(options),
+		        filterAttributes,
 		        crawlWaitEvent, crawlWaitReload);
 	}
 

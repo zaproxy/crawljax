@@ -184,7 +184,8 @@ class OutputBuilder {
 
 	private void writeJsonToOutDir(String outModelJson, String filename) {
 		try {
-			Files.write(outModelJson, new File(this.outputDir, filename), Charsets.UTF_8);
+			Files.asCharSink(new File(this.outputDir, filename), Charsets.UTF_8)
+			        .write(outModelJson);
 		} catch (IOException e) {
 			LOG.warn("Could not write JSON model to output dir. " + e.getMessage());
 		}
@@ -217,7 +218,8 @@ class OutputBuilder {
 	 */
 	void persistDom(String name, @Nullable String dom) {
 		try {
-			Files.write(Strings.nullToEmpty(dom), new File(doms, name + ".html"), Charsets.UTF_8);
+			Files.asCharSink(new File(doms, name + ".html"), Charsets.UTF_8)
+			        .write(Strings.nullToEmpty(dom));
 		} catch (IOException e) {
 			LOG.warn("Could not save dom state for {}", name);
 			LOG.debug("Could not save dom state", e);
@@ -226,7 +228,7 @@ class OutputBuilder {
 
 	String getDom(String name) {
 		try {
-			return Files.toString(new File(doms, name + ".html"), Charsets.UTF_8);
+			return Files.asCharSource(new File(doms, name + ".html"), Charsets.UTF_8).read();
 		} catch (IOException e) {
 			return "Could not load DOM: " + e.getLocalizedMessage();
 		}

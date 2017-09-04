@@ -78,7 +78,7 @@ public class LogUtilTest {
 		LoggerFactory.getLogger(CrawljaxRunner.class).warn("Test123");
 
 		assertThat(file.exists(), is(true));
-		assertThat(Files.toString(file, Charsets.UTF_8), containsString("Test123"));
+		assertThat(Files.asCharSource(file, Charsets.UTF_8).read(), containsString("Test123"));
 		assertThat(system.getConsoleOutput(), not(containsString("Test123")));
 	}
 }

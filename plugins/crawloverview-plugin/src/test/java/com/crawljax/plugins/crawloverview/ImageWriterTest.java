@@ -15,8 +15,8 @@ import com.google.common.io.Files;
 
 public class ImageWriterTest {
 
-	private static final String THUMB_HASH = "b0bd23b784b853ff760c8fb9becd25d8";
-	private static final String FULL_HASH = "df08f0343e11a92424099c8419856441";
+	private static final String THUMB_HASH = "4040cc9bb7aaea0eebdc2879055eb68b";
+	private static final String FULL_HASH = "84254c0309e738b13dc3968414dcae5a";
 
 	@Rule
 	public final TemporaryFolder folder = new TemporaryFolder();
@@ -31,11 +31,11 @@ public class ImageWriterTest {
 		        thumbnail);
 
 		assertThat("Thumbnail exists", thumbnail.exists(), is(true));
-		String hash = Files.hash(thumbnail, Hashing.md5()).toString();
+		String hash = Files.asByteSource(thumbnail).hash(Hashing.murmur3_128()).toString();
 		assertThat("Thumb hash doesn't match", hash, is(THUMB_HASH));
 
 		assertThat("Screenshot exists", fullScreenShot.exists(), is(true));
-		hash = Files.hash(fullScreenShot, Hashing.md5()).toString();
+		hash = Files.asByteSource(fullScreenShot).hash(Hashing.murmur3_128()).toString();
 		assertThat("Screenshot hash doesn't match", hash, is(FULL_HASH));
 	}
 }
