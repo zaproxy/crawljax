@@ -55,8 +55,7 @@ public class BaseCrawler {
 	 */
 	public BaseCrawler(Resource webfolder, String siteExtension) {
 		this.siteExtension = Strings.nullToEmpty(siteExtension);
-		LOG.debug("Loading web server with from folder {}", webfolder.getURL()
-				.toExternalForm());
+		LOG.debug("Loading web server with from folder {}", webfolder.getURI());
 		this.webServer = new WebServer(webfolder);
 	}
 
