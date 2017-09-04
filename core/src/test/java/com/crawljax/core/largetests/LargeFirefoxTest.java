@@ -6,13 +6,14 @@ import org.junit.experimental.categories.Category;
 import com.crawljax.browser.EmbeddedBrowser.BrowserType;
 import com.crawljax.core.configuration.BrowserConfiguration;
 import com.crawljax.test.BrowserTest;
+import com.crawljax.test.Utils;
 
 @Category(BrowserTest.class)
 public class LargeFirefoxTest extends LargeTestBase {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		assumeBinary("webdriver.gecko.driver", "geckodriver");
+		Utils.assumeBinary("webdriver.gecko.driver", "geckodriver");
 	}
 
 	@Override
