@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -41,6 +43,10 @@ public class UnfiredCandidateActions {
 	private final Provider<StateFlowGraph> sfg;
 	private final Counter crawlerLostCount;
 	private final Counter unfiredActionsCount;
+	private final ReadWriteLock consumersStateLock;
+	private final Lock consumersWriteLock;
+	private final Lock consumersReadLock;
+	private int runningConsumers;
 
 	@Inject
 	UnfiredCandidateActions(BrowserConfiguration config, Provider<StateFlowGraph> sfg,
@@ -55,6 +61,11 @@ public class UnfiredCandidateActions {
 		        registry.register(MetricsModule.EVENTS_PREFIX + "crawler_lost", new Counter());
 		unfiredActionsCount =
 		        registry.register(MetricsModule.EVENTS_PREFIX + "unfired_actions", new Counter());
+
+		consumersStateLock = new ReentrantReadWriteLock();
+		consumersWriteLock = consumersStateLock.writeLock();
+		consumersReadLock = consumersStateLock.readLock();
+		runningConsumers = 0;
 	}
 
 	/**
@@ -87,8 +98,13 @@ public class UnfiredCandidateActions {
 	}
 
 	private void removeStateFromQueue(int id) {
-		while (statesWithCandidates.remove(id)) {
-			LOG.trace("Removed id {} from the queue", id);
+		consumersWriteLock.lock();
+		try {
+			while (statesWithCandidates.remove(id)) {
+				LOG.trace("Removed id {} from the queue", id);
+			}
+		} finally {
+			consumersWriteLock.unlock();
 		}
 	}
 
@@ -126,7 +142,13 @@ public class UnfiredCandidateActions {
 			} else {
 				cache.put(state.getId(), Queues.newConcurrentLinkedQueue(actions));
 			}
-			statesWithCandidates.add(state.getId());
+			consumersWriteLock.lock();
+			try {
+				statesWithCandidates.add(state.getId());
+			} finally {
+				consumersWriteLock.unlock();
+			}
+			
 			LOG.info("There are {} states with unfired actions", statesWithCandidates.size());
 		} finally {
 			lock.unlock();
@@ -135,23 +157,35 @@ public class UnfiredCandidateActions {
 	}
 
 	/**
-	 * @return If there are any pending actions to be crawled. This method is not threadsafe and
-	 *         might return a stale value.
+	 * @return If there are any pending actions to be crawled (and no task is being crawled).
 	 */
 	public boolean isEmpty() {
-		return statesWithCandidates.isEmpty();
+		consumersReadLock.lock();
+		try {
+			return runningConsumers == 0 && statesWithCandidates.isEmpty();
+		} finally {
+			consumersReadLock.unlock();
+		}
 	}
 
 	/**
 	 * @return A new crawl task as soon as one is ready. Until then, it blocks.
 	 * @throws InterruptedException
 	 *             when taking from the queue is interrupted.
+	 * @see #taskDone()
 	 */
-	public StateVertex awaitNewTask() throws InterruptedException {
+	StateVertex awaitNewTask() throws InterruptedException {
 		int id = statesWithCandidates.take();
-		// Put it back the end of the queue. It will be removed later.
-		statesWithCandidates.add(id);
+		consumersWriteLock.lock();
+		try {
+			// Put it back the end of the queue. It will be removed later.
+			statesWithCandidates.add(id);
+			runningConsumers++;
+		} finally {
+			consumersWriteLock.unlock();
+		}
 		LOG.debug("New task polled for state {}", id);
+		LOG.debug("There are {} active consumers", runningConsumers);
 		LOG.info("There are {} states with unfired actions", statesWithCandidates.size());
 		return sfg.get().getById(id);
 	}
@@ -169,6 +203,22 @@ public class UnfiredCandidateActions {
 		} finally {
 			lock.unlock();
 			crawlerLostCount.inc();
+		}
+	}
+
+	/**
+	 * Indicates that a task is done.
+	 * <p>
+	 * Should be called after processing a task.
+	 * 
+	 * @see #awaitNewTask()
+	 */
+	void taskDone() {
+		consumersWriteLock.lock();
+		try {
+			runningConsumers--;
+		} finally {
+			consumersWriteLock.unlock();
 		}
 	}
 }

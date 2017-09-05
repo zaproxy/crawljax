@@ -1,7 +1,6 @@
 package com.crawljax.core;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +16,6 @@ public class CrawlTaskConsumer implements Callable<Void> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CrawlTaskConsumer.class);
 
-	private final AtomicInteger runningConsumers;
-
 	private final Crawler crawler;
 
 	private final UnfiredCandidateActions candidates;
@@ -31,7 +28,6 @@ public class CrawlTaskConsumer implements Callable<Void> {
 		this.candidates = candidates;
 		this.exitNotifier = exitNotifier;
 		this.crawler = crawler;
-		this.runningConsumers = new AtomicInteger(0);
 
 	}
 
@@ -39,13 +35,12 @@ public class CrawlTaskConsumer implements Callable<Void> {
 	public Void call() {
 		try {
 			while (!Thread.interrupted()) {
-				if (runningConsumers.get() == 0 && candidates.isEmpty()) {
+				if (candidates.isEmpty()) {
 					LOG.debug("No consumers active and the cache is empty. Crawl is done. Shutting down...");
 					exitNotifier.signalCrawlExhausted();
 					break;
 				}
 				pollAndHandleCrawlTasks();
-				runningConsumers.decrementAndGet();
 			}
 		} catch (InterruptedException e) {
 			LOG.debug("Consumer interrupted");
@@ -63,14 +58,14 @@ public class CrawlTaskConsumer implements Callable<Void> {
 	}
 
 	private void pollAndHandleCrawlTasks() throws InterruptedException {
+		LOG.debug("Awaiting task");
+		StateVertex crawlTask = candidates.awaitNewTask();
 		try {
-			LOG.debug("Awaiting task");
-			StateVertex crawlTask = candidates.awaitNewTask();
-			int activeConsumers = runningConsumers.incrementAndGet();
-			LOG.debug("There are {} active consumers", activeConsumers);
 			handleTask(crawlTask);
 		} catch (RuntimeException e) {
 			LOG.error("Cound not complete state crawl: " + e.getMessage(), e);
+		} finally {
+			candidates.taskDone();
 		}
 	}
 
