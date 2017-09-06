@@ -6,7 +6,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.rules.ExternalResource;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -16,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 
 public class BrowserProvider extends ExternalResource {
+
+	private static final String HEADLESS_BROWSER_ARG = "--headless";
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(BrowserProvider.class);
@@ -46,13 +50,13 @@ public class BrowserProvider extends ExternalResource {
 		RemoteWebDriver driver;
 		switch (getBrowserType()) {
 		case FIREFOX:
-			driver = new FirefoxDriver();
+			driver = newFirefoxDriver();
 			break;
 		case INTERNET_EXPLORER:
 			driver = new InternetExplorerDriver();
 			break;
 		case CHROME:
-			driver = new ChromeDriver();
+			driver = newChromeDriver();
 			break;
 		case PHANTOMJS:
 			driver = new PhantomJSDriver();
@@ -72,6 +76,18 @@ public class BrowserProvider extends ExternalResource {
 		driver.manage().deleteAllCookies();
 
 		return driver;
+	}
+
+	private static FirefoxDriver newFirefoxDriver() {
+		FirefoxOptions options = new FirefoxOptions();
+		options.addArguments(HEADLESS_BROWSER_ARG);
+		return new FirefoxDriver(options);
+	}
+
+	private static ChromeDriver newChromeDriver() {
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments(HEADLESS_BROWSER_ARG);
+		return new ChromeDriver(options);
 	}
 
 	@Override
