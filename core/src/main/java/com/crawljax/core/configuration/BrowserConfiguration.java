@@ -46,6 +46,7 @@ public class BrowserConfiguration {
 	private final Provider<EmbeddedBrowser> browserBuilder;
 	private String remoteHubUrl;
 	private String lang;
+	private boolean headless;
 
 	/**
 	 * @param numberOfBrowsers
@@ -101,6 +102,7 @@ public class BrowserConfiguration {
 		this.browsertype = browsertype;
 		this.numberOfBrowsers = numberOfBrowsers;
 		this.browserBuilder = builder;
+		this.headless = true;
 	}
 
 	public BrowserType getBrowsertype() {
@@ -123,6 +125,39 @@ public class BrowserConfiguration {
 		return browserBuilder.equals(DEFAULT_BROWSER_BUILDER);
 	}
 
+	/**
+	 * Tells whether or not the chosen browser should be started in headless mode.
+	 * <p>
+	 * This should be considered a hint, not all browsers support this feature (nor all browsers
+	 * have a GUI).
+	 * <p>
+	 * The default is {@code true}.
+	 * 
+	 * @return {@code true} if the browser should be started in headless mode, {@code false}
+	 *         otherwise.
+	 * @since 3.8
+	 * @see #setHeadless(boolean)
+	 */
+	public boolean isHeadless() {
+		return headless;
+	}
+
+	/**
+	 * Sets whether or not the chosen browser should be started in headless mode.
+	 * <p>
+	 * This should be considered a hint, not all browsers support this feature (nor all browsers
+	 * have a GUI).
+	 *
+	 * @param headless
+	 *            {@code true} if the browser should be started in headless mode, {@code false}
+	 *            otherwise.
+	 * @since 3.8
+	 * @see #isHeadless()
+	 */
+	public void setHeadless(boolean headless) {
+		this.headless = headless;
+	}
+
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
@@ -131,13 +166,14 @@ public class BrowserConfiguration {
 		        .add("browserBuilder", browserBuilder)
 		        .add("remoteHubUrl", remoteHubUrl)
 		        .add("language", lang)
+		        .add("headless", headless)
 		        .toString();
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(browsertype, numberOfBrowsers, browserBuilder,
-		        remoteHubUrl, lang);
+		        remoteHubUrl, lang, headless);
 	}
 
 	@Override
@@ -148,7 +184,8 @@ public class BrowserConfiguration {
 			        && Objects.equal(this.numberOfBrowsers, that.numberOfBrowsers)
 			        && Objects.equal(this.browserBuilder, that.browserBuilder)
 			        && Objects.equal(this.remoteHubUrl, that.remoteHubUrl)
-			        && Objects.equal(this.lang, that.lang);
+			        && Objects.equal(this.lang, that.lang)
+			        && Objects.equal(this.headless, that.headless);
 		}
 		return false;
 	}
