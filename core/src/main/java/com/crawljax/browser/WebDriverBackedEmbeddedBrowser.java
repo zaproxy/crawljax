@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,7 +23,9 @@ import java.util.regex.Pattern;
 
 import com.crawljax.core.CrawljaxException;
 import com.crawljax.core.configuration.AcceptAllFramesChecker;
+import com.crawljax.core.configuration.DefaultUnexpectedAlertHandler;
 import com.crawljax.core.configuration.IgnoreFrameChecker;
+import com.crawljax.core.configuration.UnexpectedAlertHandler;
 import com.crawljax.core.exception.BrowserConnectionException;
 import com.crawljax.core.state.Eventable;
 import com.crawljax.core.state.Identification;
@@ -111,6 +114,58 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	}
 
 	/**
+	 * Create a RemoteWebDriver backed EmbeddedBrowser.
+	 * 
+	 * @param hubUrl
+	 *            Url of the server.
+	 * @param filterAttributes
+	 *            the attributes to be filtered from DOM.
+	 * @param crawlWaitReload
+	 *            the period to wait after a reload.
+	 * @param crawlWaitEvent
+	 *            the period to wait after an event is fired.
+	 * @param unexpectedAlertHandler
+	 *            the handler of unexpected alerts, if {@code null} it's used the
+	 *            {@link DefaultUnexpectedAlertHandler}.
+	 * @return The EmbeddedBrowser.
+	 * @since 3.8
+	 */
+	public static WebDriverBackedEmbeddedBrowser withRemoteDriver(String hubUrl,
+	        ImmutableSortedSet<String> filterAttributes, long crawlWaitEvent,
+	        long crawlWaitReload, UnexpectedAlertHandler unexpectedAlertHandler) {
+		return WebDriverBackedEmbeddedBrowser.withDriver(buildRemoteWebDriver(hubUrl),
+		        filterAttributes, crawlWaitEvent, crawlWaitReload, unexpectedAlertHandler);
+	}
+
+	/**
+	 * Create a RemoteWebDriver backed EmbeddedBrowser.
+	 * 
+	 * @param hubUrl
+	 *            Url of the server.
+	 * @param filterAttributes
+	 *            the attributes to be filtered from DOM.
+	 * @param crawlWaitReload
+	 *            the period to wait after a reload.
+	 * @param crawlWaitEvent
+	 *            the period to wait after an event is fired.
+	 * @param ignoreFrameChecker
+	 *            the checker used to determine if a certain frame must be ignored.
+	 * @param unexpectedAlertHandler
+	 *            the handler of unexpected alerts, if {@code null} it's used the
+	 *            {@link DefaultUnexpectedAlertHandler}.
+	 * @return The EmbeddedBrowser.
+	 * @since 3.8
+	 */
+	public static WebDriverBackedEmbeddedBrowser withRemoteDriver(String hubUrl,
+	        ImmutableSortedSet<String> filterAttributes, long crawlWaitEvent,
+	        long crawlWaitReload, IgnoreFrameChecker ignoreFrameChecker,
+	        UnexpectedAlertHandler unexpectedAlertHandler) {
+		return WebDriverBackedEmbeddedBrowser.withDriver(buildRemoteWebDriver(hubUrl),
+		        filterAttributes, crawlWaitEvent, crawlWaitReload, ignoreFrameChecker,
+		        unexpectedAlertHandler);
+	}
+
+	/**
 	 * Create a WebDriver backed EmbeddedBrowser.
 	 * 
 	 * @param driver
@@ -149,6 +204,57 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	        long crawlWaitReload, IgnoreFrameChecker ignoreFrameChecker) {
 		return new WebDriverBackedEmbeddedBrowser(driver, filterAttributes, crawlWaitEvent,
 		        crawlWaitReload, ignoreFrameChecker);
+	}
+
+	/**
+	 * Create a WebDriver backed EmbeddedBrowser.
+	 * 
+	 * @param driver
+	 *            The WebDriver to use.
+	 * @param filterAttributes
+	 *            the attributes to be filtered from DOM.
+	 * @param crawlWaitReload
+	 *            the period to wait after a reload.
+	 * @param crawlWaitEvent
+	 *            the period to wait after an event is fired.
+	 * @param unexpectedAlertHandler
+	 *            the handler of unexpected alerts, if {@code null} it's used the
+	 *            {@link DefaultUnexpectedAlertHandler}.
+	 * @return The EmbeddedBrowser.
+	 * @since 3.8
+	 */
+	public static WebDriverBackedEmbeddedBrowser withDriver(WebDriver driver,
+	        ImmutableSortedSet<String> filterAttributes, long crawlWaitEvent,
+	        long crawlWaitReload, UnexpectedAlertHandler unexpectedAlertHandler) {
+		return new WebDriverBackedEmbeddedBrowser(driver, filterAttributes, crawlWaitEvent,
+		        crawlWaitReload, unexpectedAlertHandler);
+	}
+
+	/**
+	 * Create a WebDriver backed EmbeddedBrowser.
+	 * 
+	 * @param driver
+	 *            The WebDriver to use.
+	 * @param filterAttributes
+	 *            the attributes to be filtered from DOM.
+	 * @param crawlWaitReload
+	 *            the period to wait after a reload.
+	 * @param crawlWaitEvent
+	 *            the period to wait after an event is fired.
+	 * @param ignoreFrameChecker
+	 *            the checker used to determine if a certain frame must be ignored.
+	 * @param unexpectedAlertHandler
+	 *            the handler of unexpected alerts, if {@code null} it's used the
+	 *            {@link DefaultUnexpectedAlertHandler}.
+	 * @return The EmbeddedBrowser.
+	 * @since 3.8
+	 */
+	public static WebDriverBackedEmbeddedBrowser withDriver(WebDriver driver,
+	        ImmutableSortedSet<String> filterAttributes, long crawlWaitEvent,
+	        long crawlWaitReload, IgnoreFrameChecker ignoreFrameChecker,
+	        UnexpectedAlertHandler unexpectedAlertHandler) {
+		return new WebDriverBackedEmbeddedBrowser(driver, filterAttributes, crawlWaitEvent,
+		        crawlWaitReload, ignoreFrameChecker, unexpectedAlertHandler);
 	}
 
 	/**
@@ -201,6 +307,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	private long crawlWaitEvent;
 	private long crawlWaitReload;
 	private IgnoreFrameChecker ignoreFrameChecker = new AcceptAllFramesChecker();
+	private UnexpectedAlertHandler unexpectedAlertHandler = DefaultUnexpectedAlertHandler.INSTANCE;
 
 	/**
 	 * Constructor without configuration values.
@@ -251,6 +358,57 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	        ImmutableSortedSet<String> filterAttributes, long crawlWaitReload,
 	        long crawlWaitEvent, IgnoreFrameChecker ignoreFrameChecker) {
 		this(driver, filterAttributes, crawlWaitReload, crawlWaitEvent);
+		this.ignoreFrameChecker = ignoreFrameChecker;
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param driver
+	 *            The WebDriver to use.
+	 * @param filterAttributes
+	 *            the attributes to be filtered from DOM.
+	 * @param crawlWaitEvent
+	 *            the period to wait after an event is fired.
+	 * @param crawlWaitReload
+	 *            the period to wait after a reload.
+	 * @param unexpectedAlertHandler
+	 *            the handler of unexpected alerts, if {@code null} it's used the
+	 *            {@link DefaultUnexpectedAlertHandler}.
+	 * @since 3.8
+	 */
+	public WebDriverBackedEmbeddedBrowser(WebDriver driver,
+	        ImmutableSortedSet<String> filterAttributes, long crawlWaitEvent,
+	        long crawlWaitReload, UnexpectedAlertHandler unexpectedAlertHandler) {
+		this(driver, filterAttributes, crawlWaitReload, crawlWaitEvent);
+		if (unexpectedAlertHandler != null) {
+			this.unexpectedAlertHandler = unexpectedAlertHandler;
+		}
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param driver
+	 *            The WebDriver to use.
+	 * @param filterAttributes
+	 *            the attributes to be filtered from DOM.
+	 * @param crawlWaitReload
+	 *            the period to wait after a reload.
+	 * @param crawlWaitEvent
+	 *            the period to wait after an event is fired.
+	 * @param ignoreFrameChecker
+	 *            the checker used to determine if a certain frame must be ignored.
+	 * @param unexpectedAlertHandler
+	 *            the handler of unexpected alerts, if {@code null} it's used the
+	 *            {@link DefaultUnexpectedAlertHandler}.
+	 * @since 3.8
+	 */
+	private WebDriverBackedEmbeddedBrowser(WebDriver driver,
+	        ImmutableSortedSet<String> filterAttributes, long crawlWaitReload,
+	        long crawlWaitEvent, IgnoreFrameChecker ignoreFrameChecker,
+	        UnexpectedAlertHandler unexpectedAlertHandler) {
+		this(driver, filterAttributes, crawlWaitReload, crawlWaitEvent, unexpectedAlertHandler);
 		this.ignoreFrameChecker = ignoreFrameChecker;
 	}
 
@@ -411,7 +569,11 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 
 	@Override
 	public String getUnStrippedDom() {
-		return browser.getPageSource();
+		try {
+			return executeWithAlertHandler(browser::getPageSource);
+		} catch (Exception e) {
+			throw new WebDriverException(e);
+		}
 	}
 
 	/**
@@ -591,9 +753,37 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	@Override
 	public String getCurrentUrl() {
 		try {
-			return browser.getCurrentUrl();
+			return executeWithAlertHandler(browser::getCurrentUrl);
 		} catch (WebDriverException e) {
 			throw wrapWebDriverExceptionIfConnectionException(e);
+		} catch (Exception e) {
+			throw new WebDriverException(e);
+		}
+	}
+
+	/**
+	 * Executes the given callable handling {@code UnhandledAlertException}.
+	 * <p>
+	 * If an {@code UnhandledAlertException} is thrown it's caught and called the
+	 * {@link #unexpectedAlertHandler}, the callable is executed again if permitted, otherwise the
+	 * exception is re-thrown. An exception might still be thrown when trying to execute the action
+	 * a second time.
+	 *
+	 * @param callable
+	 *            the browser action to execute.
+	 * @return the result of the action.
+	 * @throws Exception
+	 *             if an error occurred while executing the action.
+	 */
+	private <V> V executeWithAlertHandler(Callable<V> callable) throws Exception {
+		try {
+			return callable.call();
+		} catch (UnhandledAlertException e) {
+			LOGGER.debug("Got an unhandled alert: {}", e.getAlertText(), e);
+			if (!unexpectedAlertHandler.handleAlert(browser, e.getAlertText())) {
+				throw e;
+			}
+			return callable.call();
 		}
 	}
 
@@ -624,7 +814,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	private Document getDomTreeWithFrames() throws CrawljaxException {
 
 		try {
-			Document document = DomUtils.asDocument(browser.getPageSource());
+			Document document = DomUtils.asDocument(getUnStrippedDom());
 			appendFrameContent(document.getDocumentElement(), document, "");
 			return document;
 		} catch (IOException e) {
@@ -681,7 +871,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 
 			switchToFrame(frameIdentification);
 
-			String toAppend = browser.getPageSource();
+			String toAppend = getUnStrippedDom();
 
 			LOGGER.debug("frame dom: {}", toAppend);
 
@@ -725,7 +915,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	@Override
 	public String getStrippedDomWithoutIframeContent() {
 		try {
-			String dom = browser.getPageSource();
+			String dom = getUnStrippedDom();
 			String result = toUniformDOM(dom);
 			return result;
 		} catch (WebDriverException e) {
@@ -799,7 +989,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 			switchToFrame(iframeIdentification);
 
 			// make a copy of the dom before changing into the top page
-			String frameDom = browser.getPageSource();
+			String frameDom = getUnStrippedDom();
 
 			browser.switchTo().defaultContent();
 

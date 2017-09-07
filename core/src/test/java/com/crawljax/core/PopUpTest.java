@@ -29,8 +29,8 @@ public class PopUpTest {
 		builder.crawlRules().waitAfterReloadUrl(100, TimeUnit.MILLISECONDS);
 		CrawljaxRunner runner = new CrawljaxRunner(builder.build());
 		CrawlSession session = runner.call();
-		assertThat(session.getStateFlowGraph(), hasEdges(2));
-		assertThat(session.getStateFlowGraph(), hasStates(3));
+		assertThat(session.getStateFlowGraph(), hasEdges(3));
+		assertThat(session.getStateFlowGraph(), hasStates(4));
 	}
 
 }
