@@ -23,7 +23,8 @@ public class CrawlWithCustomScopeTest {
 
 	@Test
 	public void crawlsPagesOnlyInCustomScope() throws Exception {
-		CrawlScope crawlScope = url -> url.contains("in_scope") || url.endsWith("crawlscope/");
+		CrawlScope crawlScope =
+		        url -> url.contains("in_scope") || url.endsWith("crawlscope/index.html");
 		BaseCrawler baseCrawler = new BaseCrawler("crawlscope") {
 			@Override
 			public CrawljaxConfigurationBuilder newCrawlConfigurationBuilder() {
