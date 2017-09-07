@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebDriverBrowserBuilder.class);
+	private static final String HEADLESS_ARG = "--headless";
 	private final CrawljaxConfiguration configuration;
 	private final Plugins plugins;
 
@@ -108,6 +109,10 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 			options.addPreference("network.proxy.no_proxies_on", "");
 		}
 
+		if (configuration.getBrowserConfig().isHeadless()) {
+			options.addArguments(HEADLESS_ARG);
+		}
+
 		return WebDriverBackedEmbeddedBrowser.withDriver(new FirefoxDriver(options),
 		        filterAttributes,
 		        crawlWaitEvent, crawlWaitReload);
@@ -115,10 +120,9 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 
 	private EmbeddedBrowser newChromeBrowser(ImmutableSortedSet<String> filterAttributes,
 	        long crawlWaitReload, long crawlWaitEvent) {
-		ChromeDriver driverChrome;
+		ChromeOptions optionsChrome = new ChromeOptions();
 		if (configuration.getProxyConfiguration() != null
 		        && configuration.getProxyConfiguration().getType() != ProxyType.NOTHING) {
-			ChromeOptions optionsChrome = new ChromeOptions();
 			String lang = configuration.getBrowserConfig().getLangOrNull();
 			if (!Strings.isNullOrEmpty(lang)) {
 				optionsChrome.addArguments("--lang=" + lang);
@@ -126,12 +130,13 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 			optionsChrome.addArguments("--proxy-server=http://"
 			        + configuration.getProxyConfiguration().getHostname() + ":"
 			        + configuration.getProxyConfiguration().getPort());
-			driverChrome = new ChromeDriver(optionsChrome);
-		} else {
-			driverChrome = new ChromeDriver();
 		}
 
-		return WebDriverBackedEmbeddedBrowser.withDriver(driverChrome, filterAttributes,
+		if (configuration.getBrowserConfig().isHeadless()) {
+			optionsChrome.addArguments(HEADLESS_ARG);
+		}
+
+		return WebDriverBackedEmbeddedBrowser.withDriver(new ChromeDriver(optionsChrome), filterAttributes,
 		        crawlWaitEvent, crawlWaitReload);
 	}
 

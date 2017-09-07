@@ -67,6 +67,19 @@ public class CrawljaxConfigurationBuilderTest {
 	}
 
 	@Test
+	public void shouldBeInHeadlessModeByDefault() throws Exception {
+		BrowserConfiguration browserConfiguration = testBuilder().build().getBrowserConfig();
+		assertThat(browserConfiguration.isHeadless(), is(true));
+	}
+
+	@Test
+	public void shouldSetNonHeadlessMode() throws Exception {
+		BrowserConfiguration browserConfiguration = testBuilder().build().getBrowserConfig();
+		browserConfiguration.setHeadless(false);
+		assertThat(browserConfiguration.isHeadless(), is(false));
+	}
+
+	@Test
 	public void whenSpecifyingBasicAuthTheUrlShouldBePreserved() {
 		String url = "https://example.com/test/?a=b#anchor";
 		CrawljaxConfiguration conf =
