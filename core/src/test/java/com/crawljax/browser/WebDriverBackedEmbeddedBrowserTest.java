@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -54,14 +55,12 @@ public class WebDriverBackedEmbeddedBrowserTest {
 				.withDriver(provider.newBrowser(),
 						ImmutableSortedSet.<String> of(), 500, 500);
 
-		File f = File
-				.createTempFile("webdriverfirefox-test-screenshot", ".png");
-		if (!f.exists()) {
-			browser.goToUrl(SERVER.getSiteUrl());
-			browser.saveScreenShot(f);
-			assertTrue(f.exists());
-			assertTrue(f.delete());
-		}
+		File f = File.createTempFile("test-screenshot", ".png");
+		f.deleteOnExit();
 
+		browser.goToUrl(SERVER.getSiteUrl());
+		browser.saveScreenShot(f);
+
+		assertTrue(Files.size(f.toPath()) != 0);
 	}
 }
