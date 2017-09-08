@@ -2,10 +2,13 @@
 
 package com.crawljax.browser;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeThat;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -22,6 +25,7 @@ import com.crawljax.test.BrowserTest;
 import com.crawljax.test.RunWithWebServer;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -43,6 +47,14 @@ public class WebDriverBackedEmbeddedBrowserNoCrashTest {
 	public final BrowserProvider provider = new BrowserProvider();
 
 	private EmbeddedBrowser browser;
+
+	@BeforeClass
+	public static void setupBeforeClass() {
+		// XXX JBrowserDriver hangs(?) if no URL is accessed before closing the browser
+		// which most of these tests do.
+		assumeThat("hangs(?) if no URL is accessed before closing the browser",
+		        BrowserProvider.getBrowserType(), is(not(EmbeddedBrowser.BrowserType.JBD)));
+	}
 
 	/**
 	 * Make a new Browser for every test.

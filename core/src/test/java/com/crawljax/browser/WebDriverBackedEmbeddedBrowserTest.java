@@ -1,7 +1,10 @@
 package com.crawljax.browser;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeThat;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +34,10 @@ public class WebDriverBackedEmbeddedBrowserTest {
 
 	@Test
 	public void testGetDocument() throws Exception {
+		// XXX JBrowserDriver issue: https://github.com/MachinePublishers/jBrowserDriver/issues/235
+		assumeThat("iframe tests lead to hangs/loops", BrowserProvider.getBrowserType(),
+		        is(not(EmbeddedBrowser.BrowserType.JBD)));
+
 		WebDriverBackedEmbeddedBrowser browser = WebDriverBackedEmbeddedBrowser
 				.withDriver(provider.newBrowser(),
 						ImmutableSortedSet.<String> of(), 100, 100);
