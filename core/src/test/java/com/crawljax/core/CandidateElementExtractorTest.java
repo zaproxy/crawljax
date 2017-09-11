@@ -144,6 +144,10 @@ public class CandidateElementExtractorTest {
 
 	@Test
 	public void whenNoFollowExternalUrlDoNotFollow() throws IOException, URISyntaxException {
+		// XXX Firefox issue: https://bugzilla.mozilla.org/show_bug.cgi?id=1332122
+		assumeThat("file:// leads to \"hangs\"", BrowserProvider.getBrowserType(),
+		        is(not(EmbeddedBrowser.BrowserType.FIREFOX)));
+
 		CrawljaxConfigurationBuilder builder =
 		        CrawljaxConfiguration.builderFor("http://example.com");
 		builder.crawlRules().click("a");
@@ -158,6 +162,10 @@ public class CandidateElementExtractorTest {
 
 	@Test
 	public void whenFollowExternalUrlDoFollow() throws IOException, URISyntaxException {
+		// XXX Firefox issue: https://bugzilla.mozilla.org/show_bug.cgi?id=1332122
+		assumeThat("file:// leads to \"hangs\"", BrowserProvider.getBrowserType(),
+		        is(not(EmbeddedBrowser.BrowserType.FIREFOX)));
+
 		CrawljaxConfigurationBuilder builder =
 		        CrawljaxConfiguration.builderFor("http://example.com");
 		builder.crawlRules().click("a");
