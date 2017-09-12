@@ -112,7 +112,7 @@ public abstract class LargeTestBase {
 	public static final RunWithWebServer WEB_SERVER = new RunWithWebServer("/site");
 
 	@Rule
-	public final Timeout timeout = new Timeout((int) TimeUnit.MINUTES.toMillis(15));
+	public final Timeout timeout = new Timeout(15, TimeUnit.MINUTES);
 
 	@Before
 	public void setup() throws Exception {

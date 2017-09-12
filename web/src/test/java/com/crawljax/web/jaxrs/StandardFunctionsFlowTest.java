@@ -51,7 +51,7 @@ public class StandardFunctionsFlowTest {
 	        "https://raw.githubusercontent.com/crawljax/crawljax/master/web/src/test/resources/dummy-plugin.jar";
 
 	@Rule
-	public TestRule globalTimeout = new Timeout(120 * 1000);
+	public TestRule globalTimeout = new Timeout(120, TimeUnit.SECONDS);
 
 	@ClassRule
 	public static final CrawljaxServerResource SERVER = new CrawljaxServerResource();
