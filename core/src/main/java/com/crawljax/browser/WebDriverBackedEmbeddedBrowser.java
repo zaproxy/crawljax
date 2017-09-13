@@ -476,11 +476,20 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 				} catch (ElementNotVisibleException e) {
 					throw e;
 				} catch (ElementNotInteractableException e) {
-					// HtmlUnitDriver throws ElementNotInteractableException instead of
-					// ElementNotVisibleException for elements that are not visible.
 					String message = e.getMessage();
-					if (message != null && message.contains("visible")) {
-						throw new ElementNotVisibleException(message, e);
+					if (message != null) {
+						// HtmlUnitDriver throws ElementNotInteractableException instead of
+						// ElementNotVisibleException for elements that are not visible.
+						if (message.contains("visible")) {
+							throw new ElementNotVisibleException(message, e);
+						}
+
+						// FirefoxDriver no longer throws ElementNotVisibleException for
+						// elements that are not visible, while this might catch other
+						// non-interactable cases it allows to access the hidden elements.
+						if (message.contains("FirefoxDriver")) {
+							throw new ElementNotVisibleException(message, e);
+						}
 					}
 					return false;
 				} catch (WebDriverException e) {
