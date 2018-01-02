@@ -200,7 +200,7 @@ public class PluginsTest {
 		when(stateBefore.getDom()).thenReturn(oldDom);
 		when(stateAfter.getDom()).thenReturn(newDom);
 		when(domChange.isDomChanged(context, oldDom, eventable, newDom)).thenThrow(
-		        new RuntimeException("This is an expected excpetion. ignore"));
+		        new RuntimeException("This is an expected exception. ignore"));
 		assertThat(
 		        plugins.runDomChangeNotifierPlugins(context, stateBefore, eventable, stateAfter),
 		        is(true));
