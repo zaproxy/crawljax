@@ -13,4 +13,4 @@ jdk:
   - oraclejdk8
 
 addons:
-  firefox: latest
+  firefox: "57.0.4"
