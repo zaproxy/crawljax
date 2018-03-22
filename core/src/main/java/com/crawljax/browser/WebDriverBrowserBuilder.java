@@ -114,7 +114,10 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 			try {
 				b.switchTo().alert().accept();
 			} catch (NoAlertPresentException e) {
-				LOGGER.warn("Firefox already handled the alert {}", alertText, e);
+				// Since Firefox 59 the alerts are dismissed:
+				// https://bugzilla.mozilla.org/show_bug.cgi?id=1416284
+				// but keep the handler for older versions.
+				LOGGER.debug("Firefox already handled the alert {}", alertText, e);
 			}
 			return true;
 		};
