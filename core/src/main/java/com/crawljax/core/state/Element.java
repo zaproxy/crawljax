@@ -2,6 +2,7 @@ package com.crawljax.core.state;
 
 import java.io.Serializable;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import javax.annotation.concurrent.Immutable;
 
@@ -9,7 +10,6 @@ import org.w3c.dom.Node;
 
 import com.crawljax.util.DomUtils;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
@@ -147,17 +147,17 @@ public class Element implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(node.toString(), tag, text, attributes);
+		return Objects.hash(node.toString(), tag, text, attributes);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof Element) {
 			Element that = (Element) object;
-			return Objects.equal(this.node.toString(), that.node.toString())
-			        && Objects.equal(this.tag, that.tag)
-			        && Objects.equal(this.text, that.text)
-			        && Objects.equal(this.attributes, that.attributes);
+			return Objects.equals(this.node.toString(), that.node.toString())
+			        && Objects.equals(this.tag, that.tag)
+			        && Objects.equals(this.text, that.text)
+			        && Objects.equals(this.attributes, that.attributes);
 		}
 		return false;
 	}

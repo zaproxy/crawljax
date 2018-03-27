@@ -1,9 +1,10 @@
 package com.crawljax.plugins.crawloverview.model;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 public class StateCounter {
 
@@ -34,15 +35,15 @@ public class StateCounter {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id, count);
+		return Objects.hash(id, count);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof StateCounter) {
 			StateCounter that = (StateCounter) object;
-			return Objects.equal(this.id, that.id)
-			        && Objects.equal(this.count, that.count);
+			return Objects.equals(this.id, that.id)
+			        && Objects.equals(this.count, that.count);
 		}
 		return false;
 	}

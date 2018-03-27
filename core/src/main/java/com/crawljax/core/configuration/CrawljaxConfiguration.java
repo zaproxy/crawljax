@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import com.crawljax.browser.EmbeddedBrowser.BrowserType;
@@ -15,7 +16,6 @@ import com.crawljax.core.configuration.CrawlRules.CrawlRulesBuilder;
 import com.crawljax.core.plugin.Plugin;
 import com.crawljax.core.state.StateVertexFactory;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
@@ -323,7 +323,7 @@ public class CrawljaxConfiguration {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(url, crawlScope, browserConfig, plugins, proxyConfiguration,
+		return Objects.hash(url, crawlScope, browserConfig, plugins, proxyConfiguration,
 		        crawlRules, maximumStates, maximumRuntime, maximumDepth);
 	}
 
@@ -331,15 +331,15 @@ public class CrawljaxConfiguration {
 	public boolean equals(Object object) {
 		if (object instanceof CrawljaxConfiguration) {
 			CrawljaxConfiguration that = (CrawljaxConfiguration) object;
-			return Objects.equal(this.url, that.url)
-			        && Objects.equal(this.browserConfig, that.browserConfig)
-			        && Objects.equal(this.plugins, that.plugins)
-			        && Objects.equal(this.proxyConfiguration, that.proxyConfiguration)
-			        && Objects.equal(this.crawlRules, that.crawlRules)
-			        && Objects.equal(this.crawlScope, that.crawlScope)
-			        && Objects.equal(this.maximumStates, that.maximumStates)
-			        && Objects.equal(this.maximumRuntime, that.maximumRuntime)
-			        && Objects.equal(this.maximumDepth, that.maximumDepth);
+			return Objects.equals(this.url, that.url)
+			        && Objects.equals(this.browserConfig, that.browserConfig)
+			        && Objects.equals(this.plugins, that.plugins)
+			        && Objects.equals(this.proxyConfiguration, that.proxyConfiguration)
+			        && Objects.equals(this.crawlRules, that.crawlRules)
+			        && Objects.equals(this.crawlScope, that.crawlScope)
+			        && Objects.equals(this.maximumStates, that.maximumStates)
+			        && Objects.equals(this.maximumRuntime, that.maximumRuntime)
+			        && Objects.equals(this.maximumDepth, that.maximumDepth);
 		}
 		return false;
 	}

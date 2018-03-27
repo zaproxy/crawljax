@@ -2,11 +2,11 @@ package com.crawljax.condition;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.concurrent.Immutable;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
 /**
@@ -78,16 +78,16 @@ public abstract class ConditionType {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(preConditions, description, condition);
+		return Objects.hash(preConditions, description, condition);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof ConditionType) {
 			ConditionType that = (ConditionType) object;
-			return Objects.equal(this.preConditions, that.preConditions)
-			        && Objects.equal(this.description, that.description)
-			        && Objects.equal(this.condition, that.condition);
+			return Objects.equals(this.preConditions, that.preConditions)
+			        && Objects.equals(this.description, that.description)
+			        && Objects.equals(this.condition, that.condition);
 		}
 		return false;
 	}

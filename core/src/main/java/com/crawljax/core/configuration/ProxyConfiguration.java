@@ -1,8 +1,9 @@
 package com.crawljax.core.configuration;
 
+import java.util.Objects;
+
 import javax.annotation.concurrent.Immutable;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -123,16 +124,16 @@ public class ProxyConfiguration {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(port, hostname, type);
+		return Objects.hash(port, hostname, type);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof ProxyConfiguration) {
 			ProxyConfiguration that = (ProxyConfiguration) object;
-			return Objects.equal(this.port, that.port)
-			        && Objects.equal(this.hostname, that.hostname)
-			        && Objects.equal(this.type, that.type);
+			return Objects.equals(this.port, that.port)
+			        && Objects.equals(this.hostname, that.hostname)
+			        && Objects.equals(this.type, that.type);
 		}
 		return false;
 	}

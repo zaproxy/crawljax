@@ -2,9 +2,10 @@ package com.crawljax.condition;
 
 import net.jcip.annotations.Immutable;
 
+import java.util.Objects;
+
 import com.crawljax.browser.EmbeddedBrowser;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * A condition which returns true iff the expression does NOT occur in the DOM.
@@ -31,14 +32,14 @@ public class NotRegexCondition implements Condition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getClass(), regexCondition);
+		return Objects.hash(getClass(), regexCondition);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof NotRegexCondition) {
 			NotRegexCondition that = (NotRegexCondition) object;
-			return Objects.equal(this.regexCondition, that.regexCondition);
+			return Objects.equals(this.regexCondition, that.regexCondition);
 		}
 		return false;
 	}

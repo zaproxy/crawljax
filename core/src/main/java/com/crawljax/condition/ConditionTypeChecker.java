@@ -1,5 +1,7 @@
 package com.crawljax.condition;
 
+import java.util.Objects;
+
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.slf4j.Logger;
@@ -7,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import com.crawljax.browser.EmbeddedBrowser;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
@@ -68,14 +69,14 @@ public class ConditionTypeChecker<T extends ConditionType> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(invariants);
+		return Objects.hash(invariants);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof ConditionTypeChecker) {
 			ConditionTypeChecker<?> that = (ConditionTypeChecker<?>) object;
-			return Objects.equal(this.invariants, that.invariants);
+			return Objects.equals(this.invariants, that.invariants);
 		}
 		return false;
 	}

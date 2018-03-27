@@ -1,10 +1,10 @@
 package com.crawljax.core.configuration;
 
 import java.net.URI;
+import java.util.Objects;
 
 import com.crawljax.util.UrlUtils;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -43,14 +43,14 @@ public class DefaultCrawlScope implements CrawlScope {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(url);
+		return Objects.hash(url);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof DefaultCrawlScope) {
 			DefaultCrawlScope that = (DefaultCrawlScope) object;
-			return Objects.equal(this.url, that.url);
+			return Objects.equals(this.url, that.url);
 		}
 		return false;
 	}

@@ -1,11 +1,12 @@
 package com.crawljax.core.configuration;
 
+import java.util.Objects;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.crawljax.condition.browserwaiter.WaitCondition;
 import com.crawljax.condition.crawlcondition.CrawlCondition;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedSet;
 
@@ -119,7 +120,7 @@ public class PreCrawlConfiguration {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(waitConditions, crawlConditions, includedElements,
+		return Objects.hash(waitConditions, crawlConditions, includedElements,
 		        excludedElements, filterAttributeNames);
 	}
 
@@ -127,11 +128,11 @@ public class PreCrawlConfiguration {
 	public boolean equals(Object object) {
 		if (object instanceof PreCrawlConfiguration) {
 			PreCrawlConfiguration that = (PreCrawlConfiguration) object;
-			return Objects.equal(this.waitConditions, that.waitConditions)
-			        && Objects.equal(this.crawlConditions, that.crawlConditions)
-			        && Objects.equal(this.includedElements, that.includedElements)
-			        && Objects.equal(this.excludedElements, that.excludedElements)
-			        && Objects.equal(this.filterAttributeNames, that.filterAttributeNames);
+			return Objects.equals(this.waitConditions, that.waitConditions)
+			        && Objects.equals(this.crawlConditions, that.crawlConditions)
+			        && Objects.equals(this.includedElements, that.includedElements)
+			        && Objects.equals(this.excludedElements, that.excludedElements)
+			        && Objects.equals(this.filterAttributeNames, that.filterAttributeNames);
 		}
 		return false;
 	}

@@ -2,10 +2,11 @@ package com.crawljax.condition;
 
 import net.jcip.annotations.Immutable;
 
+import java.util.Objects;
+
 import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.core.state.Identification;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * Conditions that returns true iff element found with By is visible.
@@ -32,14 +33,14 @@ public class NotVisibleCondition implements Condition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getClass(), visibleCondition);
+		return Objects.hash(getClass(), visibleCondition);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof NotVisibleCondition) {
 			NotVisibleCondition that = (NotVisibleCondition) object;
-			return Objects.equal(this.visibleCondition, that.visibleCondition);
+			return Objects.equals(this.visibleCondition, that.visibleCondition);
 		}
 		return false;
 	}

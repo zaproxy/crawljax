@@ -1,12 +1,13 @@
 package com.crawljax.plugins.crawloverview.model;
 
+import java.util.Objects;
+
 import javax.annotation.concurrent.Immutable;
 
 import com.crawljax.core.ExitNotifier.ExitStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -54,17 +55,17 @@ public final class OutPutModel {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(states, edges, statistics, exitStatus);
+		return Objects.hash(states, edges, statistics, exitStatus);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof OutPutModel) {
 			OutPutModel that = (OutPutModel) object;
-			return Objects.equal(this.states, that.states)
-			        && Objects.equal(this.edges, that.edges)
-			        && Objects.equal(this.statistics, that.statistics)
-			        && Objects.equal(this.exitStatus, that.exitStatus);
+			return Objects.equals(this.states, that.states)
+			        && Objects.equals(this.edges, that.edges)
+			        && Objects.equals(this.statistics, that.statistics)
+			        && Objects.equals(this.exitStatus, that.exitStatus);
 		}
 		return false;
 	}

@@ -1,12 +1,12 @@
 package com.crawljax.condition;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.jcip.annotations.ThreadSafe;
 
 import com.crawljax.browser.EmbeddedBrowser;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * Condition that counts how many times a condition is specified and returns true iff the specified
@@ -58,7 +58,7 @@ public class CountCondition implements Condition {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getClass(), condition, maxCount);
+		return Objects.hash(getClass(), condition, maxCount);
 	}
 
 	/**
@@ -69,8 +69,8 @@ public class CountCondition implements Condition {
 	public boolean equals(Object object) {
 		if (object instanceof CountCondition) {
 			CountCondition that = (CountCondition) object;
-			return Objects.equal(this.condition, that.condition)
-			        && Objects.equal(this.maxCount, that.maxCount);
+			return Objects.equals(this.condition, that.condition)
+			        && Objects.equals(this.maxCount, that.maxCount);
 		}
 		return false;
 	}

@@ -1,6 +1,7 @@
 package com.crawljax.condition;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -13,7 +14,6 @@ import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.util.DomUtils;
 import com.crawljax.util.XPathHelper;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * A condition which returns true if the XPath expression returns one or more elements. NOTE:
@@ -53,14 +53,14 @@ public class XPathCondition implements Condition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getClass(), expression);
+		return Objects.hash(getClass(), expression);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof XPathCondition) {
 			XPathCondition that = (XPathCondition) object;
-			return Objects.equal(this.expression, that.expression);
+			return Objects.equals(this.expression, that.expression);
 		}
 		return false;
 	}

@@ -2,9 +2,10 @@ package com.crawljax.condition;
 
 import net.jcip.annotations.Immutable;
 
+import java.util.Objects;
+
 import com.crawljax.browser.EmbeddedBrowser;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * Conditions that returns true iff the browser's current url NOT contains url. Note: Case
@@ -32,14 +33,14 @@ public class NotUrlCondition implements Condition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getClass(), urlCondition);
+		return Objects.hash(getClass(), urlCondition);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof NotUrlCondition) {
 			NotUrlCondition that = (NotUrlCondition) object;
-			return Objects.equal(this.urlCondition, that.urlCondition);
+			return Objects.equals(this.urlCondition, that.urlCondition);
 		}
 		return false;
 	}

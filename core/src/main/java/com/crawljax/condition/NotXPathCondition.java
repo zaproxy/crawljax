@@ -2,9 +2,10 @@ package com.crawljax.condition;
 
 import net.jcip.annotations.Immutable;
 
+import java.util.Objects;
+
 import com.crawljax.browser.EmbeddedBrowser;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * Condition that returns true iff no elements are found with expression.
@@ -31,14 +32,14 @@ public class NotXPathCondition implements Condition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getClass(), xpathCondition);
+		return Objects.hash(getClass(), xpathCondition);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof NotXPathCondition) {
 			NotXPathCondition that = (NotXPathCondition) object;
-			return Objects.equal(this.xpathCondition, that.xpathCondition);
+			return Objects.equals(this.xpathCondition, that.xpathCondition);
 		}
 		return false;
 	}

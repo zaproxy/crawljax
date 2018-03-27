@@ -1,5 +1,6 @@
 package com.crawljax.condition;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import net.jcip.annotations.Immutable;
@@ -9,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import com.crawljax.browser.EmbeddedBrowser;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * Condition that returns true iff experssion occurs in the dom.
@@ -42,15 +42,15 @@ public class RegexCondition implements Condition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getClass(), expression, pattern.toString());
+		return Objects.hash(getClass(), expression, pattern.toString());
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof RegexCondition) {
 			RegexCondition that = (RegexCondition) object;
-			return Objects.equal(this.expression, that.expression)
-			        && Objects.equal(this.pattern.toString(), that.pattern.toString());
+			return Objects.equals(this.expression, that.expression)
+			        && Objects.equals(this.pattern.toString(), that.pattern.toString());
 		}
 		return false;
 	}

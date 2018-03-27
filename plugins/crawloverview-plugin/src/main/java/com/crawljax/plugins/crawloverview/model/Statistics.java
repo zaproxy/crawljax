@@ -2,6 +2,7 @@ package com.crawljax.plugins.crawloverview.model;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.annotation.concurrent.Immutable;
 
@@ -12,7 +13,6 @@ import com.crawljax.core.state.StateFlowGraph;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 @Immutable
 public class Statistics {
@@ -90,7 +90,7 @@ public class Statistics {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(duration, crawlPaths, averageDomSize, edges,
+		return Objects.hash(duration, crawlPaths, averageDomSize, edges,
 		        stateStats, failedEvents);
 	}
 
@@ -98,12 +98,12 @@ public class Statistics {
 	public boolean equals(Object object) {
 		if (object instanceof Statistics) {
 			Statistics that = (Statistics) object;
-			return Objects.equal(this.duration, that.duration)
-			        && Objects.equal(this.crawlPaths, that.crawlPaths)
-			        && Objects.equal(this.averageDomSize, that.averageDomSize)
-			        && Objects.equal(this.edges, that.edges)
-			        && Objects.equal(this.stateStats, that.stateStats)
-			        && Objects.equal(this.failedEvents, that.failedEvents);
+			return Objects.equals(this.duration, that.duration)
+			        && Objects.equals(this.crawlPaths, that.crawlPaths)
+			        && Objects.equals(this.averageDomSize, that.averageDomSize)
+			        && Objects.equals(this.edges, that.edges)
+			        && Objects.equals(this.stateStats, that.stateStats)
+			        && Objects.equals(this.failedEvents, that.failedEvents);
 		}
 		return false;
 	}
