@@ -1,13 +1,13 @@
 package com.crawljax.plugins.crawloverview.model;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import javax.annotation.concurrent.Immutable;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSetMultimap;
 
 @Immutable
@@ -93,7 +93,7 @@ public class StateStatistics {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(leastFanOut, leastFanIn, mostFanOut, mostFanIn,
+		return Objects.hash(leastFanOut, leastFanIn, mostFanOut, mostFanIn,
 		        totalNumberOfStates, urls);
 	}
 
@@ -101,12 +101,12 @@ public class StateStatistics {
 	public boolean equals(Object object) {
 		if (object instanceof StateStatistics) {
 			StateStatistics that = (StateStatistics) object;
-			return Objects.equal(this.leastFanOut, that.leastFanOut)
-			        && Objects.equal(this.leastFanIn, that.leastFanIn)
-			        && Objects.equal(this.mostFanOut, that.mostFanOut)
-			        && Objects.equal(this.mostFanIn, that.mostFanIn)
-			        && Objects.equal(this.totalNumberOfStates, that.totalNumberOfStates)
-			        && Objects.equal(this.urls, that.urls);
+			return Objects.equals(this.leastFanOut, that.leastFanOut)
+			        && Objects.equals(this.leastFanIn, that.leastFanIn)
+			        && Objects.equals(this.mostFanOut, that.mostFanOut)
+			        && Objects.equals(this.mostFanIn, that.mostFanIn)
+			        && Objects.equals(this.totalNumberOfStates, that.totalNumberOfStates)
+			        && Objects.equals(this.urls, that.urls);
 		}
 		return false;
 	}

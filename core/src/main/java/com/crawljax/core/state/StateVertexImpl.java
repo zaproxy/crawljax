@@ -2,12 +2,12 @@ package com.crawljax.core.state;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Objects;
 
 import com.crawljax.core.CandidateElement;
 import com.crawljax.util.DomUtils;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import org.w3c.dom.Document;
 
@@ -83,14 +83,14 @@ public class StateVertexImpl implements StateVertex {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(strippedDom);
+		return Objects.hash(strippedDom);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof StateVertex) {
 			StateVertex that = (StateVertex) object;
-			return Objects.equal(this.strippedDom, that.getStrippedDom());
+			return Objects.equals(this.strippedDom, that.getStrippedDom());
 		}
 		return false;
 	}

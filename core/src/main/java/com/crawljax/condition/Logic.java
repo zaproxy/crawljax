@@ -1,12 +1,12 @@
 package com.crawljax.condition;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import net.jcip.annotations.Immutable;
 
 import com.crawljax.browser.EmbeddedBrowser;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * Logic operations for conditions.
@@ -74,14 +74,14 @@ public final class Logic {
 
 		@Override
 		public int hashCode() {
-			return Objects.hashCode(getClass(), condition);
+			return Objects.hash(getClass(), condition);
 		}
 
 		@Override
 		public boolean equals(Object object) {
 			if (object instanceof Not) {
 				Not that = (Not) object;
-				return Objects.equal(this.condition, that.condition);
+				return Objects.equals(this.condition, that.condition);
 			}
 			return false;
 		}
@@ -113,8 +113,8 @@ public final class Logic {
 
 		@Override
 		public int hashCode() {
-			int args = Objects.hashCode((Object[]) conditions);
-			return Objects.hashCode(getClass(), args);
+			int args = Objects.hash((Object[]) conditions);
+			return Objects.hash(getClass(), args);
 		}
 
 		@Override
@@ -153,8 +153,8 @@ public final class Logic {
 
 		@Override
 		public int hashCode() {
-			int args = Objects.hashCode((Object[]) conditions);
-			return Objects.hashCode(getClass(), args);
+			int args = Objects.hash((Object[]) conditions);
+			return Objects.hash(getClass(), args);
 		}
 
 		@Override

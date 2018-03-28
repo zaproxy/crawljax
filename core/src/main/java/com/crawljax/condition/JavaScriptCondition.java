@@ -2,10 +2,11 @@ package com.crawljax.condition;
 
 import net.jcip.annotations.Immutable;
 
+import java.util.Objects;
+
 import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.core.CrawljaxException;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * A condition in the form of a JavaScript expression which returns true if the expression return
@@ -53,14 +54,14 @@ public class JavaScriptCondition implements Condition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getClass(), expression);
+		return Objects.hash(getClass(), expression);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof JavaScriptCondition) {
 			JavaScriptCondition that = (JavaScriptCondition) object;
-			return Objects.equal(this.expression, that.expression);
+			return Objects.equals(this.expression, that.expression);
 		}
 		return false;
 	}

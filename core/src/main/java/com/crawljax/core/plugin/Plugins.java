@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,7 +25,6 @@ import com.crawljax.core.state.Eventable;
 import com.crawljax.core.state.StateVertex;
 import com.crawljax.metrics.MetricsModule;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
@@ -408,14 +408,14 @@ public class Plugins {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(plugins);
+		return Objects.hash(plugins);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof Plugins) {
 			Plugins that = (Plugins) object;
-			return Objects.equal(this.plugins, that.plugins);
+			return Objects.equals(this.plugins, that.plugins);
 		}
 		return false;
 	}

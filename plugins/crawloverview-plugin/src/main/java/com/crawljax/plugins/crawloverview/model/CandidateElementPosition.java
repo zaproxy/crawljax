@@ -1,5 +1,7 @@
 package com.crawljax.plugins.crawloverview.model;
 
+import java.util.Objects;
+
 import javax.annotation.concurrent.Immutable;
 
 import org.openqa.selenium.Dimension;
@@ -9,7 +11,6 @@ import com.crawljax.core.CandidateElement;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * Position of a candidate element of a state. This type is used to build the overlays of screenshot
@@ -89,18 +90,18 @@ public class CandidateElementPosition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(top, left, xpath, width, height);
+		return Objects.hash(top, left, xpath, width, height);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof CandidateElementPosition) {
 			CandidateElementPosition that = (CandidateElementPosition) object;
-			return Objects.equal(this.top, that.top)
-			        && Objects.equal(this.left, that.left)
-			        && Objects.equal(this.xpath, that.xpath)
-			        && Objects.equal(this.width, that.width)
-			        && Objects.equal(this.height, that.height);
+			return Objects.equals(this.top, that.top)
+			        && Objects.equals(this.left, that.left)
+			        && Objects.equals(this.xpath, that.xpath)
+			        && Objects.equals(this.width, that.width)
+			        && Objects.equals(this.height, that.height);
 		}
 		return false;
 	}

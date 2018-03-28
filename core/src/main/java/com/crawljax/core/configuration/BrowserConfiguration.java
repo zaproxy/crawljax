@@ -1,5 +1,6 @@
 package com.crawljax.core.configuration;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.concurrent.Immutable;
@@ -9,7 +10,6 @@ import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.browser.EmbeddedBrowser.BrowserType;
 import com.crawljax.browser.WebDriverBrowserBuilder;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 @Immutable
@@ -172,7 +172,7 @@ public class BrowserConfiguration {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(browsertype, numberOfBrowsers, browserBuilder,
+		return Objects.hash(browsertype, numberOfBrowsers, browserBuilder,
 		        remoteHubUrl, lang, headless);
 	}
 
@@ -180,12 +180,12 @@ public class BrowserConfiguration {
 	public boolean equals(Object object) {
 		if (object instanceof BrowserConfiguration) {
 			BrowserConfiguration that = (BrowserConfiguration) object;
-			return Objects.equal(this.browsertype, that.browsertype)
-			        && Objects.equal(this.numberOfBrowsers, that.numberOfBrowsers)
-			        && Objects.equal(this.browserBuilder, that.browserBuilder)
-			        && Objects.equal(this.remoteHubUrl, that.remoteHubUrl)
-			        && Objects.equal(this.lang, that.lang)
-			        && Objects.equal(this.headless, that.headless);
+			return Objects.equals(this.browsertype, that.browsertype)
+			        && Objects.equals(this.numberOfBrowsers, that.numberOfBrowsers)
+			        && Objects.equals(this.browserBuilder, that.browserBuilder)
+			        && Objects.equals(this.remoteHubUrl, that.remoteHubUrl)
+			        && Objects.equals(this.lang, that.lang)
+			        && Objects.equals(this.headless, that.headless);
 		}
 		return false;
 	}

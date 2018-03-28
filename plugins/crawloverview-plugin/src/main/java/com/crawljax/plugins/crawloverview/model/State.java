@@ -1,5 +1,7 @@
 package com.crawljax.plugins.crawloverview.model;
 
+import java.util.Objects;
+
 import javax.annotation.concurrent.Immutable;
 
 import com.crawljax.core.state.StateVertex;
@@ -7,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
 @Immutable
@@ -82,7 +83,7 @@ public class State {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(name, url, candidateElements, fanIn, fanOut,
+		return Objects.hash(name, url, candidateElements, fanIn, fanOut,
 		        id, failedEvents);
 	}
 
@@ -90,14 +91,14 @@ public class State {
 	public boolean equals(Object object) {
 		if (object instanceof State) {
 			State that = (State) object;
-			return Objects.equal(this.id, that.id)
-			        && Objects.equal(this.name, that.name)
-			        && Objects.equal(this.url, that.url)
-			        && Objects.equal(this.candidateElements,
+			return Objects.equals(this.id, that.id)
+			        && Objects.equals(this.name, that.name)
+			        && Objects.equals(this.url, that.url)
+			        && Objects.equals(this.candidateElements,
 			                that.candidateElements)
-			        && Objects.equal(this.fanIn, that.fanIn)
-			        && Objects.equal(this.fanOut, that.fanOut)
-			        && Objects.equal(this.failedEvents,
+			        && Objects.equals(this.fanIn, that.fanIn)
+			        && Objects.equals(this.fanOut, that.fanOut)
+			        && Objects.equals(this.failedEvents,
 			                that.failedEvents);
 		}
 		return false;

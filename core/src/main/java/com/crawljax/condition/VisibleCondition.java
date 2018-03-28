@@ -2,10 +2,11 @@ package com.crawljax.condition;
 
 import net.jcip.annotations.Immutable;
 
+import java.util.Objects;
+
 import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.core.state.Identification;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * Conditions that returns true iff element found by given identification is visible.
@@ -37,14 +38,14 @@ public class VisibleCondition implements Condition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getClass(), identification);
+		return Objects.hash(getClass(), identification);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof VisibleCondition) {
 			VisibleCondition that = (VisibleCondition) object;
-			return Objects.equal(this.identification, that.identification);
+			return Objects.equals(this.identification, that.identification);
 		}
 		return false;
 	}

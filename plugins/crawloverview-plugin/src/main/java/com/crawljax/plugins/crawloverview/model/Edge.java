@@ -1,5 +1,7 @@
 package com.crawljax.plugins.crawloverview.model;
 
+import java.util.Objects;
+
 import javax.annotation.concurrent.Immutable;
 
 import com.crawljax.core.CrawljaxException;
@@ -8,7 +10,6 @@ import com.crawljax.core.state.Eventable;
 import com.crawljax.plugins.crawloverview.CrawlOverviewException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Objects;
 
 /**
  * An {@link Edge} between two {@link State}s.
@@ -61,7 +62,7 @@ public class Edge {
 	 * @return The pre-computed hashcode.
 	 */
 	private final int buildHash() {
-		return Objects.hashCode(from, to, text, id, element, eventType);
+		return Objects.hash(from, to, text, id, element, eventType);
 	}
 
 	public String getFrom() {
@@ -102,12 +103,12 @@ public class Edge {
 	public boolean equals(Object object) {
 		if (object instanceof Edge) {
 			Edge that = (Edge) object;
-			return Objects.equal(this.from, that.from)
-			        && Objects.equal(this.to, that.to)
-			        && Objects.equal(this.text, that.text)
-			        && Objects.equal(this.id, that.id)
-			        && Objects.equal(this.element, that.element)
-			        && Objects.equal(this.eventType, that.eventType);
+			return Objects.equals(this.from, that.from)
+			        && Objects.equals(this.to, that.to)
+			        && Objects.equals(this.text, that.text)
+			        && Objects.equals(this.id, that.id)
+			        && Objects.equals(this.element, that.element)
+			        && Objects.equals(this.eventType, that.eventType);
 		}
 		return false;
 	}

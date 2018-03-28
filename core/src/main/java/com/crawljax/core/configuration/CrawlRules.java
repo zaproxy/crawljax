@@ -2,6 +2,7 @@ package com.crawljax.core.configuration;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import com.crawljax.condition.Condition;
@@ -15,7 +16,6 @@ import com.crawljax.core.state.Eventable.EventType;
 import com.crawljax.oraclecomparator.OracleComparator;
 import com.crawljax.oraclecomparator.comparators.SimpleComparator;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
@@ -429,7 +429,7 @@ public class CrawlRules {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(crawlEvents, invariants, oracleComparators,
+		return Objects.hash(crawlEvents, invariants, oracleComparators,
 		        ignoredFrameIdentifiers, preCrawlConfig, randomInputInForms, inputSpecification,
 		        testInvariantsWhileCrawling, clickOnce, crawlFrames, crawlHiddenAnchors,
 		        waitAfterReloadUrl, waitAfterEvent, followExternalLinks);
@@ -439,23 +439,23 @@ public class CrawlRules {
 	public boolean equals(Object object) {
 		if (object instanceof CrawlRules) {
 			CrawlRules that = (CrawlRules) object;
-			return Objects.equal(this.crawlEvents, that.crawlEvents)
-			        && Objects.equal(this.invariants, that.invariants)
-			        && Objects.equal(this.oracleComparators, that.oracleComparators)
-			        && Objects.equal(this.ignoredFrameIdentifiers, that.ignoredFrameIdentifiers)
-			        && Objects.equal(this.preCrawlConfig, that.preCrawlConfig)
-			        && Objects.equal(this.randomInputInForms, that.randomInputInForms)
-			        && Objects.equal(this.inputSpecification, that.inputSpecification)
-			        && Objects.equal(this.testInvariantsWhileCrawling,
+			return Objects.equals(this.crawlEvents, that.crawlEvents)
+			        && Objects.equals(this.invariants, that.invariants)
+			        && Objects.equals(this.oracleComparators, that.oracleComparators)
+			        && Objects.equals(this.ignoredFrameIdentifiers, that.ignoredFrameIdentifiers)
+			        && Objects.equals(this.preCrawlConfig, that.preCrawlConfig)
+			        && Objects.equals(this.randomInputInForms, that.randomInputInForms)
+			        && Objects.equals(this.inputSpecification, that.inputSpecification)
+			        && Objects.equals(this.testInvariantsWhileCrawling,
 			                that.testInvariantsWhileCrawling)
-			        && Objects.equal(this.clickOnce, that.clickOnce)
-			        && Objects.equal(this.randomizeCandidateElements,
+			        && Objects.equals(this.clickOnce, that.clickOnce)
+			        && Objects.equals(this.randomizeCandidateElements,
 			                that.randomizeCandidateElements)
-			        && Objects.equal(this.crawlFrames, that.crawlFrames)
-			        && Objects.equal(this.crawlHiddenAnchors, that.crawlHiddenAnchors)
-			        && Objects.equal(this.waitAfterReloadUrl, that.waitAfterReloadUrl)
-			        && Objects.equal(this.waitAfterEvent, that.waitAfterEvent)
-			        && Objects.equal(this.followExternalLinks, that.followExternalLinks);
+			        && Objects.equals(this.crawlFrames, that.crawlFrames)
+			        && Objects.equals(this.crawlHiddenAnchors, that.crawlHiddenAnchors)
+			        && Objects.equals(this.waitAfterReloadUrl, that.waitAfterReloadUrl)
+			        && Objects.equals(this.waitAfterEvent, that.waitAfterEvent)
+			        && Objects.equals(this.followExternalLinks, that.followExternalLinks);
 		}
 		return false;
 	}

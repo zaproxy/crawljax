@@ -2,9 +2,10 @@ package com.crawljax.condition;
 
 import net.jcip.annotations.Immutable;
 
+import java.util.Objects;
+
 import com.crawljax.browser.EmbeddedBrowser;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * Conditions that returns true iff the browser's current url contains url. Note: Case insensitive
@@ -31,14 +32,14 @@ public class UrlCondition implements Condition {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(getClass(), url);
+		return Objects.hash(getClass(), url);
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object instanceof UrlCondition) {
 			UrlCondition that = (UrlCondition) object;
-			return Objects.equal(this.url, that.url);
+			return Objects.equals(this.url, that.url);
 		}
 		return false;
 	}

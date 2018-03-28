@@ -5,6 +5,7 @@ package com.crawljax.core.state;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.jgrapht.graph.DefaultEdge;
@@ -16,7 +17,6 @@ import com.crawljax.forms.FormInput;
 import com.crawljax.util.XPathHelper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 /**
  * Eventable class: an element having an event attached to it (onclick, onmouseover, ...) so that it
@@ -245,7 +245,7 @@ public class Eventable extends DefaultEdge implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(eventType, identification, element,
+		return Objects.hash(eventType, identification, element,
 		        this.getSource(), this.getTarget());
 	}
 
@@ -253,11 +253,11 @@ public class Eventable extends DefaultEdge implements Serializable {
 	public boolean equals(Object object) {
 		if (object instanceof Eventable) {
 			Eventable that = (Eventable) object;
-			return Objects.equal(this.eventType, that.eventType)
-			        && Objects.equal(this.identification, that.identification)
-			        && Objects.equal(this.element, that.element)
-			        && Objects.equal(this.getSource(), that.getSource())
-			        && Objects.equal(this.getTarget(), that.getTarget());
+			return Objects.equals(this.eventType, that.eventType)
+			        && Objects.equals(this.identification, that.identification)
+			        && Objects.equals(this.element, that.element)
+			        && Objects.equals(this.getSource(), that.getSource())
+			        && Objects.equals(this.getTarget(), that.getTarget());
 		}
 		return false;
 	}
