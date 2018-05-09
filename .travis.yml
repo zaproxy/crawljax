@@ -6,7 +6,7 @@ before_install:
   - GECKODRIVER_VER="0.20.1"; wget -qO - https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VER/geckodriver-v$GECKODRIVER_VER-linux64.tar.gz | tar xz -C geckodriver
   - export PATH=$PATH:$PWD/geckodriver
 
-install: cd core && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+install: cd core && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true -B -V
 script: mvn test -B -Pintegrationtests -Dtest.browser=FIREFOX
 
 jdk:
