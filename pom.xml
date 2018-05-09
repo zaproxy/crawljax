@@ -168,6 +168,14 @@
 					<artifactId>maven-jar-plugin</artifactId>
 					<groupId>org.apache.maven.plugins</groupId>
 					<version>2.5</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<artifactId>maven-install-plugin</artifactId>
@@ -214,18 +222,6 @@
 				<configuration>
 					<tagNameFormat>crawljax-@{project.version}</tagNameFormat>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
