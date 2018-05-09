@@ -207,6 +207,10 @@
 							<abbrev>7</abbrev>
 							<dirty>-dirty</dirty>
 						</gitDescribe>
+						<excludeProperties>
+							<excludeProperty>git.build.host</excludeProperty>
+							<excludeProperty>git.commit.message.*</excludeProperty>
+						</excludeProperties>
 						<!-- Allow to build on Travis CI. -->
 						<failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
 					</configuration>
