@@ -108,6 +108,7 @@
 				<configuration>
 					<file>${project.build.finalName}.zip</file>
 					<packaging>zip</packaging>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 			<plugin>
