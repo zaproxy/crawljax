@@ -101,7 +101,7 @@
 		<dependency>
 			<groupId>com.machinepublishers</groupId>
 			<artifactId>jbrowserdriver</artifactId>
-			<version>0.17.11</version>
+			<version>1.0.0-RC1</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.seleniumhq.selenium</groupId>

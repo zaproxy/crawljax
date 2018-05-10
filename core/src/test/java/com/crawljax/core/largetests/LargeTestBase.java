@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +46,6 @@ import com.crawljax.oraclecomparator.OracleComparator;
 import com.crawljax.oraclecomparator.comparators.DateComparator;
 import com.crawljax.oraclecomparator.comparators.StyleComparator;
 import com.crawljax.test.RunWithWebServer;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -63,9 +61,6 @@ import org.slf4j.LoggerFactory;
 public abstract class LargeTestBase {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LargeTestBase.class);
-	private static final AtomicBoolean HAS_RUN = new AtomicBoolean(false);
-	private static final AtomicBoolean HAS_FINISHED = new AtomicBoolean(false);
-	private static CrawlSession session;
 
 	private static final int CLICKED_CLICK_ME_ELEMENTS = 6;
 
@@ -114,40 +109,29 @@ public abstract class LargeTestBase {
 	@Rule
 	public final Timeout timeout = new Timeout(15, TimeUnit.MINUTES);
 
-	@Before
-	public void setup() throws Exception {
-		if (!HAS_RUN.get()) {
-			HAS_RUN.set(true);
-			try {
-				CrawljaxRunner crawljax = null;
-				crawljax = new CrawljaxRunner(getCrawljaxConfiguration());
-				session = crawljax.call();
-			} finally {
-				HAS_FINISHED.set(true);
-			}
-		}
-		else {
-			while (!HAS_FINISHED.get()) {
-				LOG.debug("Waiting for crawl to finish...");
-				Thread.sleep(500);
-			}
-		}
+	protected static CrawlSession setup(BrowserConfiguration browserConfig,
+	        long timeOutAfterReloadUrl, long timeOutAfterEvent) throws Exception {
+		return new CrawljaxRunner(
+		        getCrawljaxConfiguration(browserConfig, timeOutAfterReloadUrl, timeOutAfterEvent))
+		                .call();
 	}
 
 	/**
 	 * retrieve / build the CrawljaxConfiguration for the given arguments.
 	 */
-	protected CrawljaxConfiguration getCrawljaxConfiguration() {
+	private static CrawljaxConfiguration getCrawljaxConfiguration(
+	        BrowserConfiguration browserConfig, long timeOutAfterReloadUrl,
+	        long timeOutAfterEvent) {
 
 		CrawljaxConfigurationBuilder builder =
 		  CrawljaxConfiguration.builderFor(WEB_SERVER.getSiteUrl());
-		builder.crawlRules().waitAfterEvent(getTimeOutAfterEvent(), TimeUnit.MILLISECONDS);
+		builder.crawlRules().waitAfterEvent(timeOutAfterEvent, TimeUnit.MILLISECONDS);
 		builder.crawlRules()
-			   .waitAfterReloadUrl(getTimeOutAfterReloadUrl(), TimeUnit.MILLISECONDS);
+			   .waitAfterReloadUrl(timeOutAfterReloadUrl, TimeUnit.MILLISECONDS);
 		builder.setMaximumDepth(3);
 		builder.crawlRules().clickOnce(true);
 
-		builder.setBrowserConfig(getBrowserConfiguration());
+		builder.setBrowserConfig(browserConfig);
 
 		addCrawlElements(builder);
 
@@ -254,7 +238,7 @@ public abstract class LargeTestBase {
 	}
 
 	private StateFlowGraph getStateFlowGraph() {
-		return session.getStateFlowGraph();
+		return getSession().getStateFlowGraph();
 	}
 
 	/**
@@ -293,7 +277,7 @@ public abstract class LargeTestBase {
 	private void assumeNotFirefoxBecauseOfElementSendKeysIssue() {
 		// XXX Firefox issue: https://bugzilla.mozilla.org/show_bug.cgi?id=1385895
 		assumeThat("Element Send Keys selects wrong <option> when dispatching text to <select>",
-		        session.getConfig().getBrowserConfig().getBrowsertype(),
+		        getSession().getConfig().getBrowserConfig().getBrowsertype(),
 		        is(not(BrowserType.FIREFOX)));
 	}
 
@@ -411,10 +395,5 @@ public abstract class LargeTestBase {
 		assertTrue("Link in SLOW_WIDGET is found", foundLinkInSlowWidget);
 	}
 
-	abstract BrowserConfiguration getBrowserConfiguration();
-
-	abstract long getTimeOutAfterReloadUrl();
-
-	abstract long getTimeOutAfterEvent();
-
+	protected abstract CrawlSession getSession();
 }
