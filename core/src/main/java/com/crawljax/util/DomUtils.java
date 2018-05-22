@@ -244,6 +244,7 @@ public final class DomUtils {
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Transformer transformer = factory.newTransformer();
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "0");
 			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
 					"yes");
 			transformer.setOutputProperty(OutputKeys.METHOD, "html");
