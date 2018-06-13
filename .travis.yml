@@ -12,6 +12,7 @@ script: mvn test -B -Pintegrationtests -Dtest.browser=FIREFOX
 jdk:
   - oraclejdk8
   - oraclejdk9
+  - oraclejdk10
 
 addons:
   firefox: "57.0.4"
