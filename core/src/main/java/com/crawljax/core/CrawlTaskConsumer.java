@@ -63,7 +63,7 @@ public class CrawlTaskConsumer implements Callable<Void> {
 		try {
 			handleTask(crawlTask);
 		} catch (RuntimeException e) {
-			LOG.error("Cound not complete state crawl: " + e.getMessage(), e);
+			LOG.error("Could not complete state crawl: " + e.getMessage(), e);
 		} finally {
 			candidates.taskDone();
 		}
