@@ -15,4 +15,4 @@ jdk:
   - oraclejdk10
 
 addons:
-  firefox: "57.0.4"
+  firefox: "60.0.2"
