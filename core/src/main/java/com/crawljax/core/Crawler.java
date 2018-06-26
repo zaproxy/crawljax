@@ -62,6 +62,7 @@ public class Crawler {
 	private final UnfiredCandidateActions candidateActionCache;
 	private final Provider<InMemoryStateFlowGraph> graphProvider;
 	private final StateVertexFactory vertexFactory;
+	private final ExitNotifier exitNotifier;
 
 	private CrawlPath crawlpath;
 	private StateMachine stateMachine;
@@ -72,10 +73,11 @@ public class Crawler {
 	        FormHandlerFactory formHandlerFactory, WaitConditionChecker waitConditionChecker,
 	        CandidateElementExtractorFactory elementExtractor,
 	        Provider<InMemoryStateFlowGraph> graphProvider, Plugins plugins,
-	        StateVertexFactory vertexFactory) {
+	        StateVertexFactory vertexFactory, ExitNotifier exitNotifier) {
 		this.context = context;
 		this.graphProvider = graphProvider;
 		this.vertexFactory = vertexFactory;
+		this.exitNotifier = exitNotifier;
 		this.browser = context.getBrowser();
 		this.url = config.getUrl();
 		this.basicAuthUrl = config.getBasicAuthUrl();
@@ -302,13 +304,13 @@ public class Crawler {
 	 * state. If the browser leaves the current domain, the crawler tries to get back to the
 	 * previous state.
 	 * <p>
-	 * The methods stops when {@link Thread#interrupted()}
+	 * The methods stops when there are no actions or exit was called (e.g. stopped)
 	 */
 	private void crawlThroughActions() {
-		boolean interrupted = Thread.interrupted();
+		boolean interrupted = false;
 		CandidateCrawlAction action =
 		        candidateActionCache.pollActionOrNull(stateMachine.getCurrentState());
-		while (action != null && !interrupted) {
+		while (action != null && !exitNotifier.isExitCalled()) {
 			CandidateElement element = action.getCandidateElement();
 			if (element.allConditionsSatisfied(browser)) {
 				Eventable event = new Eventable(element, action.getEventType());

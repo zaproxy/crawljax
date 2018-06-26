@@ -7,7 +7,6 @@ import javax.annotation.concurrent.ThreadSafe;
 import javax.inject.Singleton;
 
 import com.crawljax.core.configuration.CrawljaxConfiguration;
-import com.google.common.annotations.VisibleForTesting;
 
 @Singleton
 @ThreadSafe
@@ -63,6 +62,7 @@ public class ExitNotifier {
 	private final int maxStates;
 
 	private ExitStatus reason = ExitStatus.ERROR;
+	private volatile boolean exit;
 
 	public ExitNotifier(int maxStates) {
 		this.maxStates = maxStates;
@@ -85,35 +85,36 @@ public class ExitNotifier {
 	public int incrementNumberOfStates() {
 		int count = states.incrementAndGet();
 		if (count == maxStates) {
-			reason = ExitStatus.MAX_STATES;
-			latch.countDown();
+			done(ExitStatus.MAX_STATES);
 		}
 		return count;
 	}
 
 	public void signalTimeIsUp() {
-		reason = ExitStatus.MAX_TIME;
-		latch.countDown();
+		done(ExitStatus.MAX_TIME);
 	}
 
 	/**
 	 * Signal that all {@link CrawlTaskConsumer}s are done.
 	 */
 	public void signalCrawlExhausted() {
-		reason = ExitStatus.EXHAUSTED;
-		latch.countDown();
+		done(ExitStatus.EXHAUSTED);
 	}
 
 	/**
 	 * Manually stop the crawl.
 	 */
 	public void stop() {
-		reason = ExitStatus.STOPPED;
+		done(ExitStatus.STOPPED);
+	}
+
+	private void done(ExitStatus reason) {
+		this.reason = reason;
+		this.exit = true;
 		latch.countDown();
 	}
 
-	@VisibleForTesting
 	boolean isExitCalled() {
-		return latch.getCount() == 0;
+		return exit;
 	}
 }

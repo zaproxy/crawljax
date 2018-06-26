@@ -126,7 +126,8 @@ public class CrawlerTest {
 		        new Crawler(context, config,
 		                stateComparator,
 		                candidateActionCache, formHandlerFactory, waitConditionChecker,
-		                elementExtractor, graphProvider, plugins, new DefaultStateVertexFactory());
+		                elementExtractor, graphProvider, plugins, new DefaultStateVertexFactory(),
+		                exitNotifier);
 
 		setupStateFlowGraph();
 	}
