@@ -117,7 +117,8 @@ public class FormHandler {
         if (null == text || text.length() == 0) {
             return;
         }
-        WebElement inputElement = browser.getWebElement(input.getIdentification());
+		WebElement inputElement = browser.getWebElement(input.getIdentification());
+		inputElement.clear();
         inputElement.sendKeys(text);
     }
 
