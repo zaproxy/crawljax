@@ -1,4 +1,41 @@
-## [Version 3.5.1]
+
+## [Unreleased]
+### Fixed
+- Address concurrency issue with task consumers. [#33](https://github.com/zaproxy/crawljax/pull/33)
+- Handle unexpected alerts. [#36](https://github.com/zaproxy/crawljax/pull/36)
+- Address Java 9 (and above) related issues in core. [#63](https://github.com/zaproxy/crawljax/pull/63) [#64](https://github.com/zaproxy/crawljax/pull/64)
+- Don't rely on thread's interrupted state to stop. [#68](https://github.com/zaproxy/crawljax/pull/68)
+- Clear input text fields before setting the value. [#73](https://github.com/zaproxy/crawljax/pull/73)
+
+### Added
+- Add JBrowserDriver. [#40](https://github.com/zaproxy/crawljax/pull/40)
+
+### Changed
+- Update log related dependencies [#22](https://github.com/zaproxy/crawljax/pull/22)
+- Update Java version of web module to 8. [#25](https://github.com/zaproxy/crawljax/pull/25)
+- Start browsers in headless mode by default. [#34](https://github.com/zaproxy/crawljax/pull/34)
+- Add workaround for hidden elements and Firefox. [#43](https://github.com/zaproxy/crawljax/pull/43)
+- Remove empty style attributes (Firefox workaround). [#67](https://github.com/zaproxy/crawljax/pull/67)
+- Update Selenium library to 3.14.0. [#72](https://github.com/zaproxy/crawljax/pull/72)
+
+## [3.7] - 2017-08-09
+First release after forking.
+
+### Fixed
+- Fix WebDriver process leak. [#20](https://github.com/zaproxy/crawljax/pull/20)
+
+### Added
+- Allow to specify a crawl scope. [#5](https://github.com/zaproxy/crawljax/pull/5)
+
+### Changed
+- Change group ID to be under `org.zaproxy`. [#1](https://github.com/zaproxy/crawljax/pull/1)
+- Update Selenium to version 3.4.0. [#4](https://github.com/zaproxy/crawljax/pull/4)
+- Use `StringBuilder` whenever possible. [#8](https://github.com/zaproxy/crawljax/pull/8)
+- Improve support for HtmlUnit browser. [#11](https://github.com/zaproxy/crawljax/pull/11) [#15](https://github.com/zaproxy/crawljax/pull/15)
+
+## [Version 3.6](https://github.com/crawljax/crawljax/milestone/10)
+
+## Version 3.5.1
 * Updated Selenium to 2.41.0
 * Fixed stripped DOM method
 * Updated dependencies
@@ -107,3 +144,7 @@
 ### Removed:
 * Hibernate (database) has been removed.
 * Properties file is no longer supported.  Issue: 5.
+
+
+[Unreleased]: https://github.com/zaproxy/crawljax/compare/v3.7...HEAD
+[3.7]: https://github.com/zaproxy/crawljax/compare/crawljax-3.6...v3.7
