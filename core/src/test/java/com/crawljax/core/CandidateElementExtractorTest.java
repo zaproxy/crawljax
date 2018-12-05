@@ -179,6 +179,31 @@ public class CandidateElementExtractorTest {
 		assertThat(extract, hasSize(3));
 	}
 
+	@Test
+	public void testExtractContentSpecificFilenameProblem() throws Exception {
+		RunWithWebServer TEST_SITE_SERVER = new RunWithWebServer("/site/element-extractor");
+		TEST_SITE_SERVER.before();
+
+		CrawljaxConfigurationBuilder builder = CrawljaxConfiguration
+		        .builderFor(TEST_SITE_SERVER.getSiteUrl());
+		builder.crawlRules().click("a");
+		CrawljaxConfiguration config = builder.build();
+
+		CandidateElementExtractor extractor = newElementExtractor(config);
+		browser.goToUrl(TEST_SITE_SERVER.getSiteUrl());
+
+		List<CandidateElement> candidates = extractor.extract(DUMMY_STATE);
+
+		for (CandidateElement e : candidates) {
+			LOG.debug("candidate: " + e.getUniqueString());
+		}
+
+		TEST_SITE_SERVER.after();
+
+		assertNotNull(candidates);
+		assertEquals(12, candidates.size());
+	}
+
 	private List<CandidateElement> extractFromTestFile(CandidateElementExtractor extractor) throws URISyntaxException {
 		StateVertex currentState = Mockito.mock(StateVertex.class);
 		String file = "/candidateElementExtractorTest/domWithOneExternalAndTwoInternal.html";
