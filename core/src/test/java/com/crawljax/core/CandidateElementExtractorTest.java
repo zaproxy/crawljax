@@ -190,7 +190,7 @@ public class CandidateElementExtractorTest {
 
 		CandidateElementExtractor extractor = newElementExtractor(config);
 
-		String file = "/site/element-extractor/index.html";
+		String file = "/candidateElementExtractorTest/domWithFourTypeDownloadLink.html";
 		List<CandidateElement> candidates = extractFromTestFile(extractor, file);
 
 		for (CandidateElement e : candidates) {
