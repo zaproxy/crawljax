@@ -6,6 +6,7 @@
 - Address Java 9 (and above) related issues in core. [#63](https://github.com/zaproxy/crawljax/pull/63) [#64](https://github.com/zaproxy/crawljax/pull/64)
 - Don't rely on thread's interrupted state to stop. [#68](https://github.com/zaproxy/crawljax/pull/68)
 - Clear input text fields before setting the value. [#73](https://github.com/zaproxy/crawljax/pull/73)
+- Fix the regular expression of choosing candidate elements. [#76](https://github.com/zaproxy/crawljax/pull/76)
 
 ### Added
 - Add JBrowserDriver. [#40](https://github.com/zaproxy/crawljax/pull/40)
