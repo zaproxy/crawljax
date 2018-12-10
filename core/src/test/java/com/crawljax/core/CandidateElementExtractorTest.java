@@ -48,6 +48,8 @@ public class CandidateElementExtractorTest {
 	private static final StateVertex DUMMY_STATE = new DefaultStateVertexFactory().createIndex("http://localhost",
 	        "", "");
 
+	private static final String defaultFile= "/candidateElementExtractorTest/domWithOneExternalAndTwoInternal.html";
+
 	@Mock
 	private Plugins plugins;
 
@@ -154,7 +156,7 @@ public class CandidateElementExtractorTest {
 		CrawljaxConfiguration config = builder.build();
 		CandidateElementExtractor extractor = newElementExtractor(config);
 
-		List<CandidateElement> extract = extractFromTestFile(extractor);
+		List<CandidateElement> extract = extractFromTestFile(extractor, defaultFile);
 
 		assertThat(config.getCrawlRules().followExternalLinks(), is(false));
 		assertThat(extract, hasSize(2));
@@ -173,15 +175,34 @@ public class CandidateElementExtractorTest {
 		CrawljaxConfiguration config = builder.build();
 		CandidateElementExtractor extractor = newElementExtractor(config);
 
-		List<CandidateElement> extract = extractFromTestFile(extractor);
+		List<CandidateElement> extract = extractFromTestFile(extractor, defaultFile);
 
 		assertThat(config.getCrawlRules().followExternalLinks(), is(true));
 		assertThat(extract, hasSize(3));
 	}
 
-	private List<CandidateElement> extractFromTestFile(CandidateElementExtractor extractor) throws URISyntaxException {
+	@Test
+	public void testExtractShouldIgnoreDownloadFiles() throws Exception {
+
+		CrawljaxConfigurationBuilder builder = CrawljaxConfiguration.builderFor("http://example.com");
+		builder.crawlRules().click("a");
+		CrawljaxConfiguration config = builder.build();
+
+		CandidateElementExtractor extractor = newElementExtractor(config);
+
+		String file = "/candidateElementExtractorTest/domWithFourTypeDownloadLink.html";
+		List<CandidateElement> candidates = extractFromTestFile(extractor, file);
+
+		for (CandidateElement e : candidates) {
+			LOG.debug("candidate: " + e.getUniqueString());
+		}
+
+		assertNotNull(candidates);
+		assertEquals(12, candidates.size());
+	}
+
+	private List<CandidateElement> extractFromTestFile(CandidateElementExtractor extractor, String file) throws URISyntaxException {
 		StateVertex currentState = Mockito.mock(StateVertex.class);
-		String file = "/candidateElementExtractorTest/domWithOneExternalAndTwoInternal.html";
 		URL dom = Resources.getResource(getClass(), file);
 		browser.goToUrl(dom.toURI());
 		List<CandidateElement> extract = extractor.extract(currentState);
