@@ -130,10 +130,6 @@ public class WebDriverBackedEmbeddedBrowserNoCrashTest {
 	 */
 	@Test
 	public final void testGetDom() throws CrawljaxException, URISyntaxException {
-		// XXX Firefox issue: https://bugzilla.mozilla.org/show_bug.cgi?id=1332122
-		assumeThat("file:// leads to \"hangs\"", BrowserProvider.getBrowserType(),
-		        is(not(EmbeddedBrowser.BrowserType.FIREFOX)));
-
 		URL index = WebDriverBackedEmbeddedBrowserTest.class.getResource("/site/simple.html");
 		browser.goToUrl(index.toURI());
 		browser.getStrippedDom();
