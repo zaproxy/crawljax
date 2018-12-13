@@ -328,7 +328,7 @@ public class CandidateElementExtractor {
 				URI uri = URI.create(href);
 				return !uri.getHost().equalsIgnoreCase(siteHostName);
 			} catch (IllegalArgumentException e) {
-				LOG.info("Unreadable externa link {}", href);
+				LOG.info("Unreadable external link {}", href);
 			}
 		}
 		return false;
