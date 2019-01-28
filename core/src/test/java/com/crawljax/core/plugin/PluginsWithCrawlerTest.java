@@ -56,6 +56,7 @@ public class PluginsWithCrawlerTest {
 	private static CrawlSession session;
 
 	@BeforeClass
+	@SuppressWarnings("deprecation")
 	public static void setup() {
 		CrawljaxConfigurationBuilder builder = SERVER.newConfigBuilder("/crawler/");
 
@@ -204,6 +205,7 @@ public class PluginsWithCrawlerTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void verifyOnUrlLoadFollowers() {
 		afterFirstPluginsIsFollowedBy(OnUrlLoadPlugin.class, ImmutableSet.of(
 		        OnInvariantViolationPlugin.class, OnNewStatePlugin.class,
@@ -251,6 +253,7 @@ public class PluginsWithCrawlerTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void verifyPreStateCrawlingFollowers() {
 		pluginsIsFollowedBy(PreStateCrawlingPlugin.class,
 		        ImmutableSet.of(DomChangeNotifierPlugin.class, OnFireEventFailedPlugin.class,
@@ -259,6 +262,7 @@ public class PluginsWithCrawlerTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void onRevisitStatesFollowers() {
 		pluginsIsFollowedBy(OnRevisitStatePlugin.class, ImmutableSet.of(
 		        OnFireEventFailedPlugin.class, DomChangeNotifierPlugin.class,
@@ -266,6 +270,7 @@ public class PluginsWithCrawlerTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void verifyOnDomChangedFollowers() {
 		pluginsIsFollowedBy(DomChangeNotifierPlugin.class, ImmutableSet.of(
 		        OnFireEventFailedPlugin.class, DomChangeNotifierPlugin.class,
@@ -281,6 +286,7 @@ public class PluginsWithCrawlerTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void domStatesChangesAreEqualToNumberOfStatesAfterIndex() {
 		int numberOfStates = session.getStateFlowGraph().getAllStates().size();
 		int newStatesAfterIndexPage = numberOfStates - 1;

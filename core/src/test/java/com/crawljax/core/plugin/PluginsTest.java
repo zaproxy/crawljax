@@ -39,6 +39,7 @@ public class PluginsTest {
 	private Plugins plugins;
 
 	@Mock
+	@SuppressWarnings("deprecation")
 	private DomChangeNotifierPlugin domChange;
 
 	@Mock
@@ -142,6 +143,7 @@ public class PluginsTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void domChangeNotifierIsCalled() {
 		StateVertex stateBefore = mock(StateVertex.class);
 		Eventable eventable = mock(Eventable.class);
@@ -191,6 +193,7 @@ public class PluginsTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void whenDomChangeErrorsTheDefaultIsUsed() {
 		StateVertex stateBefore = mock(StateVertex.class);
 		Eventable eventable = mock(Eventable.class);
