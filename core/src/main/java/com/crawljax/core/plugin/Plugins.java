@@ -42,7 +42,7 @@ public class Plugins {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Plugins.class
 	        .getName());
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	static final ImmutableSet<Class<? extends Plugin>> KNOWN_PLUGINS = ImmutableSet
 	        .of(DomChangeNotifierPlugin.class, OnBrowserCreatedPlugin.class,
 	                OnFireEventFailedPlugin.class,
@@ -58,6 +58,7 @@ public class Plugins {
 	private final MetricRegistry registry;
 
 	@Inject
+	@SuppressWarnings("deprecation")
 	public Plugins(CrawljaxConfiguration config, MetricRegistry registry) {
 		this.registry = registry;
 		List<? extends Plugin> plugins = config.getPlugins();
@@ -368,6 +369,7 @@ public class Plugins {
 	/**
 	 * Load and run the DomChangeNotifierPlugin.
 	 */
+	@SuppressWarnings("deprecation")
 	public boolean runDomChangeNotifierPlugins(final CrawlerContext context,
 	        final StateVertex stateBefore, final Eventable event,
 	        final StateVertex stateAfter) {
