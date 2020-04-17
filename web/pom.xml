@@ -14,7 +14,7 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<jersey.version>1.18.1</jersey.version>
+		<jersey.version>1.19.4</jersey.version>
 	</properties>
 
 	<dependencies>
