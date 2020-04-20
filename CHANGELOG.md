@@ -17,7 +17,7 @@
 - Start browsers in headless mode by default. [#34](https://github.com/zaproxy/crawljax/pull/34)
 - Add workaround for hidden elements and Firefox. [#43](https://github.com/zaproxy/crawljax/pull/43)
 - Remove empty style attributes (Firefox workaround). [#67](https://github.com/zaproxy/crawljax/pull/67)
-- Update Selenium library to 3.14.0. [#72](https://github.com/zaproxy/crawljax/pull/72)
+- Update Selenium library to 3.141.59. [#113](https://github.com/zaproxy/crawljax/pull/113)
 
 ## [3.7] - 2017-08-09
 First release after forking.
