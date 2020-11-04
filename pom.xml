@@ -42,7 +42,7 @@
 		<selenium.version>3.141.59</selenium.version>
 		<!-- Guava version used by Crawljax needs to be compatible with the one used by Selenium, otherwise JAR hell. -->
 		<guava.version>25.0-jre</guava.version>
-		<jetty.version>9.4.28.v20200408</jetty.version>
+		<jetty.version>9.4.34.v20201102</jetty.version>
 		<metrics.version>3.0.2</metrics.version>
 	</properties>
 
