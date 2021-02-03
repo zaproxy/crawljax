@@ -1,0 +1,33 @@
+name: Java CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [8, 11]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2/repository
+          key: ${{ runner.os }}-gradle-${{ matrix.java }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-${{ matrix.java }}-
+            ${{ runner.os }}-gradle-
+      - run: mkdir geckodriver
+      - run: GECKODRIVER_VER="0.29.0"; wget -qO - https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VER/geckodriver-v$GECKODRIVER_VER-linux64.tar.gz | tar xz -C geckodriver
+      - run: export PATH=$PATH:$PWD/geckodriver
+      - run: cd core && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true -B -V
+      - run: mvn test -B -Pintegrationtests -Dtest.browser=FIREFOX
