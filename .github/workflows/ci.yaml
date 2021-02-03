@@ -26,8 +26,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-${{ matrix.java }}-
             ${{ runner.os }}-gradle-
-      - run: mkdir geckodriver
-      - run: GECKODRIVER_VER="0.29.0"; wget -qO - https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VER/geckodriver-v$GECKODRIVER_VER-linux64.tar.gz | tar xz -C geckodriver
-      - run: export PATH=$PATH:$PWD/geckodriver
-      - run: cd core && mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true -B -V
-      - run: mvn test -B -Pintegrationtests -Dtest.browser=FIREFOX
+      - run: |
+          mkdir geckodriver
+          GECKODRIVER_VER="0.29.0"; wget -qO - https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VER/geckodriver-v$GECKODRIVER_VER-linux64.tar.gz | tar xz -C geckodriver
+          export PATH=$PATH:$PWD/geckodriver
+      - run: |
+          cd core
+          mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true -B -V
+          mvn test -B -Pintegrationtests -Dtest.browser=FIREFOX
