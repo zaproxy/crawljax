@@ -8,9 +8,6 @@
 - Clear input text fields before setting the value. [#73](https://github.com/zaproxy/crawljax/pull/73)
 - Fix the regular expression of choosing candidate elements. [#76](https://github.com/zaproxy/crawljax/pull/76)
 
-### Added
-- Add JBrowserDriver. [#40](https://github.com/zaproxy/crawljax/pull/40)
-
 ### Changed
 - Update log related dependencies [#22](https://github.com/zaproxy/crawljax/pull/22)
 - Update Java version of web module to 8. [#25](https://github.com/zaproxy/crawljax/pull/25)

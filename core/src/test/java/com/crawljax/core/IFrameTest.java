@@ -4,21 +4,15 @@ package com.crawljax.core;
 
 import static com.crawljax.browser.matchers.StateFlowGraphMatchers.hasEdges;
 import static com.crawljax.browser.matchers.StateFlowGraphMatchers.hasStates;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeThat;
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.crawljax.browser.BrowserProvider;
-import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.CrawljaxConfiguration.CrawljaxConfigurationBuilder;
 import com.crawljax.test.BrowserTest;
@@ -34,13 +28,6 @@ public class IFrameTest {
 
 	@ClassRule
 	public static final RunWithWebServer WEB_SERVER = new RunWithWebServer("/site");
-
-	@BeforeClass
-	public static void setUpBeforeClass() {
-		// XXX JBrowserDriver issue: https://github.com/MachinePublishers/jBrowserDriver/issues/235
-		assumeThat("iframe tests lead to hangs/loops", BrowserProvider.getBrowserType(),
-		        is(not(EmbeddedBrowser.BrowserType.JBD)));
-	}
 
 	protected CrawljaxConfigurationBuilder setupConfig() {
 		CrawljaxConfigurationBuilder builder = WEB_SERVER.newConfigBuilder("iframe");
