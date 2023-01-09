@@ -10,9 +10,6 @@ import com.crawljax.core.configuration.UnexpectedAlertHandler;
 import com.crawljax.core.plugin.Plugins;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSortedSet;
-import com.machinepublishers.jbrowserdriver.JBrowserDriver;
-import com.machinepublishers.jbrowserdriver.ProxyConfig;
-import com.machinepublishers.jbrowserdriver.Settings;
 
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
@@ -71,10 +68,6 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 					        WebDriverBackedEmbeddedBrowser.withDriver(
 					                new InternetExplorerDriver(),
 					                filterAttributes, crawlWaitEvent, crawlWaitReload);
-					break;
-				case JBD:
-					browser =
-					        newJBrowserDriver(filterAttributes, crawlWaitReload, crawlWaitEvent);
 					break;
 				case CHROME:
 					browser = newChromeBrowser(filterAttributes, crawlWaitReload, crawlWaitEvent);
@@ -167,22 +160,6 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 
 		return WebDriverBackedEmbeddedBrowser.withDriver(new ChromeDriver(optionsChrome), filterAttributes,
 		        crawlWaitEvent, crawlWaitReload);
-	}
-
-	private EmbeddedBrowser newJBrowserDriver(ImmutableSortedSet<String> filterAttributes,
-	        long crawlWaitReload, long crawlWaitEvent) {
-		Settings.Builder settingsBuilder = Settings.builder();
-		settingsBuilder.headless(configuration.getBrowserConfig().isHeadless());
-
-		ProxyConfiguration proxyConf = configuration.getProxyConfiguration();
-		if (proxyConf != null && proxyConf.getType() != ProxyType.NOTHING) {
-			settingsBuilder.proxy(new ProxyConfig(ProxyConfig.Type.HTTP, proxyConf.getHostname(),
-			        proxyConf.getPort()));
-		}
-
-		return WebDriverBackedEmbeddedBrowser.withDriver(
-		        new JBrowserDriver(settingsBuilder.build()),
-		        filterAttributes, crawlWaitEvent, crawlWaitReload);
 	}
 
 	private EmbeddedBrowser newPhantomJSDriver(ImmutableSortedSet<String> filterAttributes,

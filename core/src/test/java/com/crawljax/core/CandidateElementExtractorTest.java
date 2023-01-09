@@ -2,11 +2,9 @@ package com.crawljax.core;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeThat;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -117,10 +115,6 @@ public class CandidateElementExtractorTest {
 
 	@Test
 	public void testExtractIframeContents() throws Exception {
-		// XXX JBrowserDriver issue: https://github.com/MachinePublishers/jBrowserDriver/issues/235
-		assumeThat("iframe tests lead to hangs/loops", BrowserProvider.getBrowserType(),
-		        is(not(EmbeddedBrowser.BrowserType.JBD)));
-
 		RunWithWebServer server = new RunWithWebServer("/site");
 		server.before();
 		CrawljaxConfigurationBuilder builder = CrawljaxConfiguration

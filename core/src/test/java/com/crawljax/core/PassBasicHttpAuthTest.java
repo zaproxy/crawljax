@@ -3,7 +3,6 @@ package com.crawljax.core;
 import static com.crawljax.browser.matchers.StateFlowGraphMatchers.hasStates;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.AnyOf.anyOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assume.assumeThat;
 
@@ -42,12 +41,9 @@ public class PassBasicHttpAuthTest {
 	@BeforeClass
 	public static void setupBeforeClass() {
 		// XXX PhantomJS issue: https://github.com/ariya/phantomjs/issues/12665
-		// XXX JBrowserDriver issue:
-		// https://github.com/MachinePublishers/jBrowserDriver/issues/132#issuecomment-259491450
 		assumeThat("URLs with userinfo are not correctly processed",
 		        BrowserProvider.getBrowserType(),
-		        not(anyOf(is(EmbeddedBrowser.BrowserType.PHANTOMJS),
-		                is(EmbeddedBrowser.BrowserType.JBD))));
+		        is(not(EmbeddedBrowser.BrowserType.PHANTOMJS)));
 	}
 
 	@Before

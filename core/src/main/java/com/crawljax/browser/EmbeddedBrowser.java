@@ -21,7 +21,7 @@ public interface EmbeddedBrowser {
 	 * Browser types.
 	 */
 	public enum BrowserType {
-		FIREFOX, INTERNET_EXPLORER, CHROME, REMOTE, PHANTOMJS, JBD
+		FIREFOX, INTERNET_EXPLORER, CHROME, REMOTE, PHANTOMJS
 	}
 
 	/**
