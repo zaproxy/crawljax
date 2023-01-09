@@ -67,8 +67,6 @@
 		<module>examples</module>
 		<module>test-utils</module>
 		<module>plugins</module>
-		<module>plugin-archetype</module>
-    	<module>web</module>
   </modules>
 
 	<dependencyManagement>
