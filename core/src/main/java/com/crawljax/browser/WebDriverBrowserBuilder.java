@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableSortedSet;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -107,7 +108,9 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 			/* use proxy for everything, including localhost */
 			profile.setPreference("network.proxy.no_proxies_on", "");
 
-			return WebDriverBackedEmbeddedBrowser.withDriver(new FirefoxDriver(profile),
+			FirefoxOptions options = new FirefoxOptions();
+			options.setProfile(profile);
+			return WebDriverBackedEmbeddedBrowser.withDriver(new FirefoxDriver(options),
 			        filterAttributes, crawlWaitReload, crawlWaitEvent);
 		}
 

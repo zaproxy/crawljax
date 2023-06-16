@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.zaproxy.crawljax</groupId>
 		<artifactId>crawljax-parent-pom</artifactId>
-		<version>3.7</version>
+		<version>3.7.1</version>
 	</parent>
 
 	<artifactId>crawljax-cli</artifactId>

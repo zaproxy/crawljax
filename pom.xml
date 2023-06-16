@@ -9,7 +9,7 @@
 
 	<groupId>org.zaproxy.crawljax</groupId>
 	<artifactId>crawljax-parent-pom</artifactId>
-	<version>3.7</version>
+	<version>3.7.1</version>
 	<packaging>pom</packaging>
 
 	<name>Crawljax parent POM</name>
@@ -33,9 +33,9 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<slf4j.version>1.7.7</slf4j.version>
 		<logback.version>1.1.2</logback.version>
-		<selenium.version>3.4.0</selenium.version>
+		<selenium.version>4.10.0</selenium.version>
 		<!-- Guava version used by Crawljax needs to be compatible with the one used by Selenium, otherwise JAR hell. -->
-		<guava.version>21.0</guava.version>
+		<guava.version>31.1-jre</guava.version>
 		<jetty.version>9.3.0.M1</jetty.version>
 		<metrics.version>3.0.2</metrics.version>
 	</properties>
@@ -44,7 +44,7 @@
 		<connection>scm:git:git@github.com:zaproxy/crawljax.git</connection>
 		<developerConnection>scm:git:git@github.com:zaproxy/crawljax.git</developerConnection>
 		<url>https://github.com/zaproxy/crawljax</url>
-		<tag>v3.7</tag>
+		<tag>v3.7.1</tag>
 	</scm>
 
 	<licenses>

@@ -27,8 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import com.crawljax.plugins.crawloverview.model.Statistics;
 import com.google.common.collect.Lists;
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 
 public class OverviewIntegrationTest {
 
@@ -39,7 +37,7 @@ public class OverviewIntegrationTest {
 			.getLogger(OverviewIntegrationTest.class);
 
 	private static Server server;
-	private static DefaultSelenium selenium;
+	private static String baseUrl;
 
 	private static WebDriver driver;
 
@@ -48,12 +46,11 @@ public class OverviewIntegrationTest {
 		LOG.debug("Starting Jetty");
 		server = new Server(0);
 
-		String url = setupJetty();
-		LOG.info("Jetty started on {}", url);
-		driver = new FirefoxDriver();
-		LOG.debug("Starting selenium");
-		selenium = new WebDriverBackedSelenium(driver, url);
+		baseUrl = setupJetty();
+		LOG.info("Jetty started on {}", baseUrl);
 
+		LOG.debug("Starting WebDriver");
+		driver = new FirefoxDriver();
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 
@@ -69,7 +66,7 @@ public class OverviewIntegrationTest {
 
 	@Test
 	public void whenOpenedGraphIsShownAndBrandIsPresent() {
-		selenium.open("/");
+		driver.get(baseUrl + "/");
 
 		sourceHasNoVelocitySymbols();
 
@@ -89,14 +86,14 @@ public class OverviewIntegrationTest {
 
 	@Test
 	public void whenClickStatisticsHeadersArePresent() {
-		selenium.open("/");
+		driver.get(baseUrl + "/");
 		driver.findElement(By.linkText("Statistics")).click();
 		assertElementsText("H1", "Crawl results", "Highs and lows");
 	}
 
 	@Test
 	public void whenClickConfigHeadersArePresent() {
-		selenium.open("/");
+		driver.get(baseUrl + "/");
 		driver.findElement(By.linkText("Configuration")).click();
 		assertElementsText("H1", "Crawl configuration", "Version info");
 	}
@@ -118,7 +115,7 @@ public class OverviewIntegrationTest {
 
 	@Test
 	public void allUrlsAreShown() {
-		selenium.open("/#urls");
+		driver.get(baseUrl + "/#urls");
 		List<WebElement> tableRows = visibleElementsByCss("tr");
 		int urlsExpeted = HOVER_CRAWL.getResult().getStatistics()
 				.getStateStats().getUrls().size();
@@ -127,7 +124,7 @@ public class OverviewIntegrationTest {
 
 	@Test
 	public void allStatesAreShown() {
-		selenium.open("/#graph");
+		driver.get(baseUrl + "/#graph");
 		Statistics statistics = HOVER_CRAWL.getResult().getStatistics();
 		// drawnstate -1 because the outer state is also a group.
 		int drawnStates = driver.findElements(By.cssSelector("g")).size() - 1;
@@ -154,6 +151,6 @@ public class OverviewIntegrationTest {
 	@AfterClass
 	public static void tearDown() throws Exception {
 		server.stop();
-		selenium.stop();
+		driver.quit();
 	}
 }

@@ -36,7 +36,6 @@ import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.io.Files;
 
 import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchFrameException;
@@ -47,7 +46,7 @@ import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.internal.WrapsDriver;
+import org.openqa.selenium.WrapsDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.ErrorHandler.UnknownServerException;
@@ -310,21 +309,13 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	 *             when interrupted during the wait.
 	 */
 	private boolean fireEventWait(WebElement webElement, Eventable eventable)
-	        throws ElementNotVisibleException, InterruptedException {
+	        throws ElementNotInteractableException, InterruptedException {
 		switch (eventable.getEventType()) {
 			case click:
 				try {
 					webElement.click();
-				} catch (ElementNotVisibleException e) {
-					throw e;
 				} catch (ElementNotInteractableException e) {
-					// HtmlUnitDriver throws ElementNotInteractableException instead of
-					// ElementNotVisibleException for elements that are not visible.
-					String message = e.getMessage();
-					if (message != null && message.contains("visible")) {
-						throw new ElementNotVisibleException(message, e);
-					}
-					return false;
+					throw e;
 				} catch (WebDriverException e) {
 					throwIfConnectionException(e);
 					return false;
@@ -497,7 +488,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	 */
 	@Override
 	public synchronized boolean fireEventAndWait(Eventable eventable)
-	        throws ElementNotVisibleException,
+	        throws ElementNotInteractableException,
 	        NoSuchElementException, InterruptedException {
 		try {
 
@@ -531,7 +522,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 				browser.switchTo().defaultContent();
 			}
 			return result;
-		} catch (ElementNotVisibleException | NoSuchElementException e) {
+		} catch (ElementNotInteractableException | NoSuchElementException e) {
 			throw e;
 		} catch (WebDriverException e) {
 			throwIfConnectionException(e);
