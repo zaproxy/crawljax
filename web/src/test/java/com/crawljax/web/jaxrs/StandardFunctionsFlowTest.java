@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,13 +35,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 
 public class StandardFunctionsFlowTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(StandardFunctionsFlowTest.class);
-	private static DefaultSelenium selenium;
 	private static WebDriver driver;
 
 	private static String CONFIG_NAME = "TestConfiguration";
@@ -63,7 +61,6 @@ public class StandardFunctionsFlowTest {
 	public static void setup() throws Exception {
 		driver = new FirefoxDriver();
 		LOG.debug("Starting selenium");
-		selenium = new WebDriverBackedSelenium(driver, SERVER.getUrl());
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 
@@ -195,7 +192,7 @@ public class StandardFunctionsFlowTest {
 				return notification.getText().equals("Configuration Saved");
 			}
 		};
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(isSaved);
 	}
 
@@ -230,7 +227,7 @@ public class StandardFunctionsFlowTest {
 				return notification.getText().equals("Configuration Deleted");
 			}
 		};
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(isDeleted);
 	}
 
@@ -252,7 +249,7 @@ public class StandardFunctionsFlowTest {
 				return running != null;
 			}
 		};
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(isRunning);
 
 		ExpectedCondition<Boolean> isComplete = new ExpectedCondition<Boolean>() {
@@ -262,7 +259,7 @@ public class StandardFunctionsFlowTest {
 				return success != null;
 			}
 		};
-		wait = new WebDriverWait(driver, 60);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 		wait.until(isComplete);
 
 		List<WebElement> crawlHistoryLink = driver.findElements(By.linkText("Crawl History"));
@@ -319,7 +316,7 @@ public class StandardFunctionsFlowTest {
 		List<WebElement> uploadLink = driver.findElements(By.linkText("Upload Local Plugin"));
 		followLink(uploadLink.get(0));
 
-		WebElement uploaded = (new WebDriverWait(driver, 10))
+		WebElement uploaded = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 		        .until(ExpectedConditions.presenceOfElementLocated(By
 		                .xpath("//legend[contains(text(),'Available Plugins')]/following-sibling::table//tbody//tr"
 		                        + "//td[contains(text(),'" + LOCAL_PLUGIN_NAME + "')]")));
@@ -341,7 +338,7 @@ public class StandardFunctionsFlowTest {
 		        driver.findElements(By.linkText("Download Remote Plugin"));
 		followLink(downloadLink.get(0));
 
-		WebElement uploaded = (new WebDriverWait(driver, 10))
+		WebElement uploaded = (new WebDriverWait(driver, Duration.ofSeconds(10)))
 		        .until(ExpectedConditions.presenceOfElementLocated(By
 		                .xpath("//legend[contains(text(),'Available Plugins')]/following-sibling::table//tbody//tr"
 		                        + "//td[contains(text(),'" + REMOTE_PLUGIN_NAME + "')]")));
@@ -388,7 +385,7 @@ public class StandardFunctionsFlowTest {
 					return notification.getText().equals("Plugin Deleted");
 				}
 			};
-			WebDriverWait wait = new WebDriverWait(driver, 10);
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 			wait.until(isDeleted);
 			if (!isElementPresent(driver, By.linkText("Delete"))) {
 				break;
@@ -424,7 +421,7 @@ public class StandardFunctionsFlowTest {
 	}
 
 	private void open(String hashLocation) {
-		selenium.open("/#/" + hashLocation);
+		driver.get(SERVER.getUrl() + "/#/" + hashLocation);
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -480,6 +477,6 @@ public class StandardFunctionsFlowTest {
 
 	@AfterClass
 	public static void tearDown() throws Exception {
-		selenium.stop();
+		driver.quit();
 	}
 }
