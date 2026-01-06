@@ -1,8 +1,8 @@
 package com.crawljax.browser;
 
+import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.rules.ExternalResource;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -69,9 +69,9 @@ public class BrowserProvider extends ExternalResource {
 		/* Store the browser as a used browser so we can clean it up later. */
 		usedBrowsers.add(driver);
 
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS)
-				.pageLoadTimeout(30, TimeUnit.SECONDS)
-				.setScriptTimeout(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5))
+				.pageLoadTimeout(Duration.ofSeconds(30))
+				.scriptTimeout(Duration.ofSeconds(30));
 
 		driver.manage().deleteAllCookies();
 

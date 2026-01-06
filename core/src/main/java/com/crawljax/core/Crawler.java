@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.NoSuchElementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -232,7 +232,7 @@ public class Crawler {
 		boolean isFired = false;
 		try {
 			isFired = browser.fireEventAndWait(eventToFire);
-		} catch (ElementNotVisibleException | NoSuchElementException e) {
+		} catch (ElementNotInteractableException | NoSuchElementException e) {
 			if (crawlRules.isCrawlHiddenAnchors() && eventToFire.getElement() != null
 			        && "A".equals(eventToFire.getElement().getTag())) {
 				isFired = visitAnchorHrefIfPossible(eventToFire);
