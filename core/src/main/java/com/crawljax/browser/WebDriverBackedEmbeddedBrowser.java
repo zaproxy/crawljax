@@ -39,7 +39,6 @@ import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.io.Files;
 
 import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchFrameException;
@@ -468,30 +467,13 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	 *             when interrupted during the wait.
 	 */
 	private boolean fireEventWait(WebElement webElement, Eventable eventable)
-	        throws ElementNotVisibleException, InterruptedException {
+	        throws ElementNotInteractableException, InterruptedException {
 		switch (eventable.getEventType()) {
 			case click:
 				try {
 					webElement.click();
-				} catch (ElementNotVisibleException e) {
-					throw e;
 				} catch (ElementNotInteractableException e) {
-					String message = e.getMessage();
-					if (message != null) {
-						// HtmlUnitDriver throws ElementNotInteractableException instead of
-						// ElementNotVisibleException for elements that are not visible.
-						if (message.contains("visible")) {
-							throw new ElementNotVisibleException(message, e);
-						}
-
-						// FirefoxDriver no longer throws ElementNotVisibleException for
-						// elements that are not visible, while this might catch other
-						// non-interactable cases it allows to access the hidden elements.
-						if (message.contains("FirefoxDriver")) {
-							throw new ElementNotVisibleException(message, e);
-						}
-					}
-					return false;
+					throw e;
 				} catch (WebDriverException e) {
 					throwIfConnectionException(e);
 					return false;
@@ -675,7 +657,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	 */
 	@Override
 	public synchronized boolean fireEventAndWait(Eventable eventable)
-	        throws ElementNotVisibleException,
+	        throws ElementNotInteractableException,
 	        NoSuchElementException, InterruptedException {
 		try {
 
@@ -709,7 +691,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 				browser.switchTo().defaultContent();
 			}
 			return result;
-		} catch (ElementNotVisibleException | NoSuchElementException e) {
+		} catch (ElementNotInteractableException | NoSuchElementException e) {
 			throw e;
 		} catch (WebDriverException e) {
 			throwIfConnectionException(e);
@@ -1155,8 +1137,7 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 		private final AtomicInteger threadNumber = new AtomicInteger(1);
 
 		public CloseBrowserThreadFactory() {
-			SecurityManager s = System.getSecurityManager();
-			group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
+			group = Thread.currentThread().getThreadGroup();
 		}
 
 		@Override

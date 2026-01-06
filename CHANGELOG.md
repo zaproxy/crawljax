@@ -3,18 +3,20 @@
 ### Fixed
 - Address concurrency issue with task consumers. [#33](https://github.com/zaproxy/crawljax/pull/33)
 - Handle unexpected alerts. [#36](https://github.com/zaproxy/crawljax/pull/36)
-- Address Java 9 (and above) related issues in core. [#63](https://github.com/zaproxy/crawljax/pull/63) [#64](https://github.com/zaproxy/crawljax/pull/64)
 - Don't rely on thread's interrupted state to stop. [#68](https://github.com/zaproxy/crawljax/pull/68)
 - Clear input text fields before setting the value. [#73](https://github.com/zaproxy/crawljax/pull/73)
 - Fix the regular expression of choosing candidate elements. [#76](https://github.com/zaproxy/crawljax/pull/76)
 
 ### Changed
-- Update log related dependencies [#22](https://github.com/zaproxy/crawljax/pull/22)
-- Update Java version of web module to 8. [#25](https://github.com/zaproxy/crawljax/pull/25)
+- Update minimium Java version to 17.
+- Update Selenium library to 4.39.0.
+- Update log related dependencies.
 - Start browsers in headless mode by default. [#34](https://github.com/zaproxy/crawljax/pull/34)
-- Add workaround for hidden elements and Firefox. [#43](https://github.com/zaproxy/crawljax/pull/43)
 - Remove empty style attributes (Firefox workaround). [#67](https://github.com/zaproxy/crawljax/pull/67)
-- Update Selenium library to 3.141.59. [#113](https://github.com/zaproxy/crawljax/pull/113)
+
+## [3.7.1] - 2023-06-21
+### Changed
+- Update Selenium library to 4.10.0.
 
 ## [3.7] - 2017-08-09
 First release after forking.
@@ -144,5 +146,6 @@ First release after forking.
 * Properties file is no longer supported.  Issue: 5.
 
 
-[Unreleased]: https://github.com/zaproxy/crawljax/compare/v3.7...HEAD
+[Unreleased]: https://github.com/zaproxy/crawljax/compare/v3.7.1...HEAD
+[3.7.1]: https://github.com/zaproxy/crawljax/compare/v3.7...v3.7.1
 [3.7]: https://github.com/zaproxy/crawljax/compare/crawljax-3.6...v3.7

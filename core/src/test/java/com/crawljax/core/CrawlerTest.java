@@ -35,9 +35,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mock.Strictness;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /**
  * Test class for the Crawler testing.
@@ -70,16 +71,16 @@ public class CrawlerTest {
 	@Mock
 	private WaitConditionChecker waitConditionChecker;
 
-	@Mock
+	@Mock(strictness = Strictness.LENIENT)
 	private CandidateElementExtractor extractor;
 
-	@Mock
+	@Mock(strictness = Strictness.LENIENT)
 	private UnfiredCandidateActions candidateActionCache;
 
-	@Mock
+	@Mock(strictness = Strictness.LENIENT)
 	private StateVertex index;
 
-	@Mock
+	@Mock(strictness = Strictness.LENIENT)
 	private StateVertex target;
 
 	@Mock
@@ -88,7 +89,7 @@ public class CrawlerTest {
 	@Mock
 	private Provider<InMemoryStateFlowGraph> graphProvider;
 
-	@Mock
+	@Mock(strictness = Strictness.LENIENT)
 	private Eventable eventToTransferToTarget;
 
 	@Captor
