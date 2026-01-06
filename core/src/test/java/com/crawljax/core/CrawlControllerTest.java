@@ -16,7 +16,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Provider;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +48,6 @@ public class CrawlControllerTest {
 
 	private UnfiredCandidateActions candidateActions;
 
-	private ExecutorService executor;
 	private ExitNotifier consumersDoneLatch;
 
 	@Mock
@@ -76,8 +74,14 @@ public class CrawlControllerTest {
 	@Mock
 	private PostCrawlingPlugin postCrawlPlugin;
 
+	@Mock
+	private CrawlerContext crawlerContext;
+
+	private CrawljaxConfiguration config;
+
 	@Before
 	public void setup() {
+		config = CrawljaxConfiguration.builderFor("http://example.com").build();
 		setupGraphAndStates();
 
 		polledActions = new AtomicInteger();
@@ -96,6 +100,7 @@ public class CrawlControllerTest {
 				return null;
 			}
 		}).when(crawler).execute(any(StateVertex.class));
+		Mockito.doReturn(crawlerContext).when(crawler).getContext();
 	}
 
 	private void setupGraphAndStates() {
@@ -121,7 +126,7 @@ public class CrawlControllerTest {
 	}
 
 	private void setupForConsumers(int consumers) {
-		executor = Executors.newFixedThreadPool(consumers + 2);
+		ExecutorService executor = Executors.newFixedThreadPool(consumers + 2);
 		CrawljaxConfiguration config =
 		        CrawljaxConfiguration
 		                .builderFor("http://example.com")
@@ -151,12 +156,14 @@ public class CrawlControllerTest {
 	public void withASingleTaskTheCrawlerTerminates() {
 		setupForConsumers(1);
 		runWithOneTask();
+        verifyPerfectEndState();
 	}
 
 	@Test(timeout = 5000L)
 	public void withASingleTaskMultipleConsumersTheCrawlerTerminates() {
 		setupForConsumers(4);
 		runWithOneTask();
+        verifyPerfectEndState();
 	}
 
 	private void runWithOneTask() {
@@ -173,6 +180,7 @@ public class CrawlControllerTest {
 		candidateActions.addActions(mockActions(2), state3);
 		controller.call();
 		assertThat(polledActions.get(), is(6));
+        verifyPerfectEndState();
 	}
 
 	@Test(timeout = 50_000)
@@ -180,6 +188,7 @@ public class CrawlControllerTest {
 		setupForConsumers(4);
 		runWith300Actions();
 		verify(crawler, times(4)).close();
+        verifyPerfectEndState();
 	}
 
 	private void runWith300Actions() {
@@ -200,10 +209,25 @@ public class CrawlControllerTest {
 		return list;
 	}
 
-	@After
-	public void verifyPerfectEndState() {
+	private void verifyPerfectEndState() {
 		assertThat(candidateActions.isEmpty(), is(true));
 		assertThat(consumersDoneLatch.isExitCalled(), is(true));
 		verify(postCrawlPlugin).postCrawling(crawlSessionProvider.get(), ExitStatus.EXHAUSTED);
+	}
+
+	@Test
+	public void withErrorFromConsumerFactoryShutsDownExecutor() {
+		ExecutorService executor = mock(ExecutorService.class);
+		config = mock(CrawljaxConfiguration.class);
+		consumersDoneLatch = mock(ExitNotifier.class);
+		crawlSessionProvider = mock(CrawlSessionProvider.class);
+		Plugins plugins = mock(Plugins.class);
+		when(consumerFactory.get()).thenThrow(RuntimeException.class);
+		controller = new CrawlController(
+				executor, consumerFactory, config, consumersDoneLatch, crawlSessionProvider, plugins);
+		try {
+			controller.call();
+		} catch (RuntimeException ignore) {}
+		verify(executor).shutdownNow();
 	}
 }
