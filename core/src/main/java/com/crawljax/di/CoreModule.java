@@ -4,6 +4,8 @@ import javax.inject.Singleton;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.condition.ConditionTypeChecker;
@@ -45,7 +47,7 @@ public class CoreModule extends AbstractModule {
 
 		bind(ExitNotifier.class).toInstance(new ExitNotifier(configuration.getMaximumStates()));
 
-		bind(ExecutorService.class).toInstance(Executors.newCachedThreadPool());
+		bind(ExecutorService.class).toInstance(Executors.newCachedThreadPool(new CrawlerThreadFactory()));
 
 		bind(CrawlSession.class).toProvider(CrawlSessionProvider.class);
 
@@ -82,5 +84,27 @@ public class CoreModule extends AbstractModule {
 
 	public interface CandidateElementExtractorFactory {
 		CandidateElementExtractor newExtractor(EmbeddedBrowser browser);
+	}
+
+	private static class CrawlerThreadFactory implements ThreadFactory {
+		private static final String NAME_PREFIX = "Crawljax-Crawler-";
+		private final ThreadGroup group;
+		private final AtomicInteger threadNumber = new AtomicInteger(1);
+
+		public CrawlerThreadFactory() {
+			group = Thread.currentThread().getThreadGroup();
+		}
+
+		@Override
+		public Thread newThread(Runnable r) {
+			Thread t = new Thread(group, r,
+			        NAME_PREFIX + threadNumber.getAndIncrement(),
+			        0);
+			if (t.isDaemon())
+				t.setDaemon(false);
+			if (t.getPriority() != Thread.NORM_PRIORITY)
+				t.setPriority(Thread.NORM_PRIORITY);
+			return t;
+		}
 	}
 }
