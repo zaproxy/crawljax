@@ -6,12 +6,10 @@ import javax.inject.Provider;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.ProxyConfiguration;
 import com.crawljax.core.configuration.ProxyConfiguration.ProxyType;
-import com.crawljax.core.configuration.UnexpectedAlertHandler;
 import com.crawljax.core.plugin.Plugins;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSortedSet;
 
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -97,23 +95,7 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 	private EmbeddedBrowser newFireFoxBrowser(ImmutableSortedSet<String> filterAttributes,
 	        long crawlWaitReload, long crawlWaitEvent) {
 		FirefoxOptions options = new FirefoxOptions();
-
-		// XXX Marionette does not yet handle the user prompts:
-		// https://bugzilla.mozilla.org/show_bug.cgi?id=1264259
-		// Once it's implemented it could be called:
-		// options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT);
-		// and removed the following custom UnexpectedAlertHandler.
-		UnexpectedAlertHandler unexpectedAlertHandler = (b, alertText) -> {
-			try {
-				b.switchTo().alert().accept();
-			} catch (NoAlertPresentException e) {
-				// Since Firefox 59 the alerts are dismissed:
-				// https://bugzilla.mozilla.org/show_bug.cgi?id=1416284
-				// but keep the handler for older versions.
-				LOGGER.debug("Firefox already handled the alert {}", alertText, e);
-			}
-			return true;
-		};
+		options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT);
 		
 		if (configuration.getProxyConfiguration() != null) {
 			String lang = configuration.getBrowserConfig().getLangOrNull();
@@ -136,7 +118,7 @@ public class WebDriverBrowserBuilder implements Provider<EmbeddedBrowser> {
 		}
 
 		return WebDriverBackedEmbeddedBrowser.withDriver(new FirefoxDriver(options),
-		        filterAttributes, crawlWaitEvent, crawlWaitReload, unexpectedAlertHandler);
+		        filterAttributes, crawlWaitEvent, crawlWaitReload);
 	}
 
 	private EmbeddedBrowser newChromeBrowser(ImmutableSortedSet<String> filterAttributes,
