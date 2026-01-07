@@ -46,6 +46,8 @@ public class UnfiredCandidateActions {
 	private final ReadWriteLock consumersStateLock;
 	private final Lock consumersWriteLock;
 	private final Lock consumersReadLock;
+	private int waitingConsumers;
+	private int limitWaiting;
 	private int runningConsumers;
 
 	@Inject
@@ -66,6 +68,7 @@ public class UnfiredCandidateActions {
 		consumersWriteLock = consumersStateLock.writeLock();
 		consumersReadLock = consumersStateLock.readLock();
 		runningConsumers = 0;
+		limitWaiting  = config.getNumberOfBrowsers() - 1;
 	}
 
 	/**
@@ -162,7 +165,7 @@ public class UnfiredCandidateActions {
 	public boolean isEmpty() {
 		consumersReadLock.lock();
 		try {
-			return runningConsumers == 0 && statesWithCandidates.isEmpty();
+			return waitingConsumers == limitWaiting  && runningConsumers == 0 && statesWithCandidates.isEmpty();
 		} finally {
 			consumersReadLock.unlock();
 		}
@@ -175,11 +178,19 @@ public class UnfiredCandidateActions {
 	 * @see #taskDone()
 	 */
 	StateVertex awaitNewTask() throws InterruptedException {
+		consumersWriteLock.lock();
+		try {
+			waitingConsumers++;
+		} finally {
+			consumersWriteLock.unlock();
+		}
+
 		int id = statesWithCandidates.take();
 		consumersWriteLock.lock();
 		try {
 			// Put it back the end of the queue. It will be removed later.
 			statesWithCandidates.add(id);
+			waitingConsumers--;
 			runningConsumers++;
 		} finally {
 			consumersWriteLock.unlock();

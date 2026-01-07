@@ -1,7 +1,7 @@
 
 ## [Unreleased]
 ### Fixed
-- Address concurrency issue with task consumers. [#33](https://github.com/zaproxy/crawljax/pull/33)
+- Address concurrency issue with task consumers.
 - Handle unexpected alerts. [#36](https://github.com/zaproxy/crawljax/pull/36)
 - Don't rely on thread's interrupted state to stop. [#68](https://github.com/zaproxy/crawljax/pull/68)
 - Clear input text fields before setting the value. [#73](https://github.com/zaproxy/crawljax/pull/73)
