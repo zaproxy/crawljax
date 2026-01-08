@@ -15,7 +15,7 @@
 
 	<groupId>org.zaproxy.crawljax</groupId>
 	<artifactId>crawljax-parent-pom</artifactId>
-	<version>3.8-SNAPSHOT</version>
+	<version>3.8.0</version>
 	<packaging>pom</packaging>
 
 	<name>Crawljax parent POM</name>
