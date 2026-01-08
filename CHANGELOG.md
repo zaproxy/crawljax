@@ -1,5 +1,5 @@
 
-## [Unreleased]
+## [3.8.0] - 2025-01-08
 ### Fixed
 - Address concurrency issue with task consumers.
 - Handle unexpected alerts. [#36](https://github.com/zaproxy/crawljax/pull/36)
@@ -147,6 +147,6 @@ First release after forking.
 * Properties file is no longer supported.  Issue: 5.
 
 
-[Unreleased]: https://github.com/zaproxy/crawljax/compare/v3.7.1...HEAD
+[3.8.0]: https://github.com/zaproxy/crawljax/compare/v3.7.1...v3.8.0
 [3.7.1]: https://github.com/zaproxy/crawljax/compare/v3.7...v3.7.1
 [3.7]: https://github.com/zaproxy/crawljax/compare/crawljax-3.6...v3.7
