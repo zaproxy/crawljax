@@ -38,7 +38,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<slf4j.version>2.0.17</slf4j.version>
-		<logback.version>1.5.23</logback.version>
+		<logback.version>1.5.25</logback.version>
 		<selenium.version>4.39.0</selenium.version>
 		<!-- Guava version used by Crawljax needs to be compatible with the one used by Selenium, otherwise JAR hell. -->
 		<guava.version>33.5.0-jre</guava.version>
